@@ -7,3 +7,13 @@ minetunes.gui.title=mineTunes
 minetunes.gui.playlists=Manage Playlists
 minetunes.gui.options=Options
 minetunes.gui.exit=Exit
+minetunes.gui.devTools=Debug Tools
+
+# Player Text
+minetunes.player.chooser.filterPlaylist=Folder or Playlist (.m3u)
+minetunes.player.chooser.filterMusic=Music (.mp3)
+
+# Dev Gui Text
+minetunes.guidev.clear=Clear Debug Output
+minetunes.guidev.chooser=Debug File Chooser
+minetunes.guidev.playMp3=Play an .mp3
