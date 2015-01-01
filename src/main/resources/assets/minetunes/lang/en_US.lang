@@ -1,0 +1,9 @@
+# Keybinds
+minetunes.key.category=MineTunes Keybinds
+minetunes.keys.menu=Main Menu
+
+# Gui Text
+minetunes.gui.title=mineTunes
+minetunes.gui.playlists=Manage Playlists
+minetunes.gui.options=Options
+minetunes.gui.exit=Exit
