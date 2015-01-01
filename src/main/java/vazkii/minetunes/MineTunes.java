@@ -14,7 +14,7 @@ public class MineTunes {
 
 	public static final boolean DEBUG_MODE = ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
 
-	public static ThreadMusicPlayer musicPlayerThread;
+	public volatile static ThreadMusicPlayer musicPlayerThread;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

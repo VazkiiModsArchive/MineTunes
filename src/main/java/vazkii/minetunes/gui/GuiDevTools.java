@@ -27,7 +27,8 @@ public class GuiDevTools extends GuiMineTunes {
 		buttonList.add(new GuiButton(0, width / 2 - 100, 30, 200, 20, StatCollector.translateToLocal("minetunes.guidev.clear")));
 		buttonList.add(new GuiButton(1, width / 2 - 100, 55, 200, 20, StatCollector.translateToLocal("minetunes.guidev.chooser")));
 		buttonList.add(new GuiButton(2, width / 2 - 100, 80, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playMp3")));
-		buttonList.add(new GuiButton(3, width / 2 - 100, 105, 200, 20, StatCollector.translateToLocal("minetunes.guidev.resetThread")));
+		buttonList.add(new GuiButton(3, width / 2 - 100, 105, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playLast")));
+		buttonList.add(new GuiButton(4, width / 2 - 100, 130, 200, 20, StatCollector.translateToLocal("minetunes.guidev.resetThread")));
 	}
 	
 	@Override
@@ -57,6 +58,9 @@ public class GuiDevTools extends GuiMineTunes {
 			new FileSelector(new MusicFilter(), JFileChooser.FILES_ONLY, ActionPlayMp3.instance);
 			break;
 		case 3:
+			ActionPlayMp3.instance.playLast();
+			break;
+		case 4:
 			if(MineTunes.musicPlayerThread != null)
 				MineTunes.musicPlayerThread.forceKill();
 			MineTunes.startThread();

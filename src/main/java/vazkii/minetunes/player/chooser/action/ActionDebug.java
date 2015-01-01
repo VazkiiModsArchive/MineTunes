@@ -10,7 +10,7 @@ public class ActionDebug implements ISelectorAction {
 	
 	@Override
 	public void select(File file) {
-		GuiDevTools.debugLog(file.getAbsolutePath());		
+		GuiDevTools.debugLog("File: " + file.getAbsolutePath());		
 	}
 
 }

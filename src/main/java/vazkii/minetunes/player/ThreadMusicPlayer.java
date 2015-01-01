@@ -13,9 +13,8 @@ import vazkii.minetunes.gui.GuiDevTools;
 public class ThreadMusicPlayer extends Thread {
 
 	AdvancedPlayer player;
-	File queuedFile;
+	volatile File queuedFile;
 
-	boolean isPlaying = false;
 	boolean kill = false;
 
 	public ThreadMusicPlayer() {
@@ -27,6 +26,7 @@ public class ThreadMusicPlayer extends Thread {
 	@Override
 	public void run() {
 		try {
+			GuiDevTools.debugLog("Starting " + this);
 			while(!kill) {
 				if(queuedFile != null) {
 					GuiDevTools.debugLog("Queued: " + queuedFile.getAbsolutePath());
@@ -57,6 +57,8 @@ public class ThreadMusicPlayer extends Thread {
 	}
 
 	public void resetPlayer() {
+		GuiDevTools.debugLog("Resetting Player.");
+
 		if(player != null)
 			player.close();
 
@@ -64,6 +66,7 @@ public class ThreadMusicPlayer extends Thread {
 	}
 
 	public void play(File file) {
+		resetPlayer();
 		queuedFile = file;
 	}
 
