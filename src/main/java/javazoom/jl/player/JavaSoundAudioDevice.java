@@ -27,10 +27,12 @@ package javazoom.jl.player;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
+import vazkii.minetunes.player.ThreadMusicPlayer;
 import javazoom.jl.decoder.Decoder;
 import javazoom.jl.decoder.JavaLayerException;
 
@@ -111,7 +113,7 @@ public class JavaSoundAudioDevice extends AudioDeviceBase
                     c.setValue(c.getMaximum());
                 }*/
                 source.start();
-
+         		setGain(ThreadMusicPlayer.gain); // XXX ~Vazkii
             }
         } catch (RuntimeException ex)
           {
@@ -212,4 +214,35 @@ public class JavaSoundAudioDevice extends AudioDeviceBase
 		}
 
 	}
+	
+	/* ====================================================================================
+	 * XXX
+	 * Functions added by necessity, not present in the original code.
+	 * ~Vazkii
+	 * ====================================================================================
+	 */
+	
+	// From http://stackoverflow.com/a/2324408
+	public void setGain(float gain)
+	{
+	    if (source != null)
+	    {
+	        FloatControl volControl = (FloatControl) source.getControl(FloatControl.Type.MASTER_GAIN);
+	        float newGain = gain;
+
+	        volControl.setValue(newGain);
+	    }
+	}
+	
+	public float getGain()
+	{
+	    if (source != null)
+	    {
+	        FloatControl volControl = (FloatControl) source.getControl(FloatControl.Type.MASTER_GAIN);
+	        return volControl.getValue();
+	    }
+	    
+	    return 0F;
+	}
+	
 }

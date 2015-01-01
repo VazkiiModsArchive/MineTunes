@@ -20,3 +20,4 @@ minetunes.guidev.chooser=Debug File Chooser
 minetunes.guidev.playMp3=Play .mp3
 minetunes.guidev.playLast=Play Last .mp3
 minetunes.guidev.playPause=Play/Pause
+minetunes.guidev.volumeControl=Volume Control [+ / -(shift)]

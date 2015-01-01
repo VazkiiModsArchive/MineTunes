@@ -3,6 +3,8 @@ package vazkii.minetunes.player;
 import java.io.File;
 import java.io.FileInputStream;
 
+import javazoom.jl.player.AudioDevice;
+import javazoom.jl.player.JavaSoundAudioDevice;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
@@ -10,6 +12,11 @@ import vazkii.minetunes.gui.GuiDevTools;
 
 public class ThreadMusicPlayer extends Thread {
 
+	public static final float MIN_GAIN = -20F;
+	public static final float MAX_GAIN = 0F;
+	public static final float MED_GAIN = (MAX_GAIN - MIN_GAIN) / 2 * (Math.abs(MIN_GAIN) / MIN_GAIN); 
+	public volatile static float gain = MED_GAIN;
+	
 	EventListener listener = new EventListener();
 	AdvancedPlayer player;
 
@@ -100,6 +107,40 @@ public class ThreadMusicPlayer extends Thread {
 				queued = true;
 				paused = false;
 			}
+	}
+	
+	public float getGain() {
+		if(player == null)
+			return gain;
+		
+		AudioDevice device = player.getAudioDevice();
+		if(device != null && device instanceof JavaSoundAudioDevice)
+			return ((JavaSoundAudioDevice) device).getGain();
+		return gain;
+	}
+	
+	public void addGain(float gain) {
+		setGain(getGain() + gain);
+	}
+	
+	public void setGain(float gain) {
+		if(player == null)
+			return;
+		
+		this.gain = Math.min(MAX_GAIN, Math.max(MIN_GAIN, gain));
+		AudioDevice device = player.getAudioDevice();
+		if(device != null && device instanceof JavaSoundAudioDevice)
+			((JavaSoundAudioDevice) device).setGain(this.gain);
+	}
+	
+	public float getRelativeVolume() {
+		return getRelativeVolume(getGain());
+	}
+	
+	public float getRelativeVolume(float gain) {
+		float width = MAX_GAIN - MIN_GAIN;
+		float rel = Math.abs(gain - MIN_GAIN);
+		return rel / Math.abs(width);
 	}
 
 	public void forceKill() {

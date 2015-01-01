@@ -31,6 +31,7 @@ public class GuiDevTools extends GuiMineTunes {
 		buttonList.add(new GuiButton(3, 10, 105, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playMp3")));
 		buttonList.add(new GuiButton(4, 10, 130, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playLast")));
 		buttonList.add(new GuiButton(5, 10, 155, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playPause")));
+		buttonList.add(new GuiButton(6, 10, 180, 200, 20, StatCollector.translateToLocal("minetunes.guidev.volumeControl")));
 	}
 	
 	@Override
@@ -72,6 +73,14 @@ public class GuiDevTools extends GuiMineTunes {
 		case 5:
 			if(MineTunes.musicPlayerThread != null)
 				MineTunes.musicPlayerThread.pauseOrPlay();
+			break;
+		case 6:
+			if(MineTunes.musicPlayerThread != null) {
+				float gainVal = 0.5F;
+				MineTunes.musicPlayerThread.addGain(isShiftKeyDown() ? -gainVal : gainVal);
+				float gain = MineTunes.musicPlayerThread.getGain();
+				debugLog("Audio Gain: " + gain + " (Relative Volume: " + MineTunes.musicPlayerThread.getRelativeVolume(gain) + ")");
+			}
 			break;
 		}
 	}
