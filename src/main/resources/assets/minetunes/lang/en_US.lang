@@ -17,3 +17,4 @@ minetunes.player.chooser.filterMusic=Music (.mp3)
 minetunes.guidev.clear=Clear Debug Output
 minetunes.guidev.chooser=Debug File Chooser
 minetunes.guidev.playMp3=Play an .mp3
+minetunes.guidev.resetThread=Reset Thread
