@@ -81,7 +81,7 @@ public class GuiDevTools extends GuiMineTunes {
 				System.out.println(s);
 			
 			while(debugOut.size() > max)
-				debugOut.remove(debugOut.size() - 1);
+				debugOut.remove(0);
 		}
 	}
 	

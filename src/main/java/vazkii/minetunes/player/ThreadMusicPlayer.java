@@ -30,7 +30,8 @@ public class ThreadMusicPlayer extends Thread {
 			while(!kill) {
 				if(queuedFile != null) {
 					GuiDevTools.debugLog("Queued: " + queuedFile.getAbsolutePath());
-					resetPlayer();
+					if(player != null)
+						resetPlayer();
 					player = new AdvancedPlayer(new FileInputStream(queuedFile));
 					queuedFile = null;
 					GuiDevTools.debugLog("Player Loaded");
@@ -39,11 +40,12 @@ public class ThreadMusicPlayer extends Thread {
 				boolean played = false;
 				if(player != null) {
 					GuiDevTools.debugLog("Playing File");
-					played = player.play(Integer.MAX_VALUE);
+					player.play();
+					played = true;
 				}
 
 				if(played) {
-					GuiDevTools.debugLog("Reached Final Frame, next...");
+					GuiDevTools.debugLog("Song done, next...");
 					next();
 				}
 			}
