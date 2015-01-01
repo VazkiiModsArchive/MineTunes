@@ -151,7 +151,8 @@ public class AdvancedPlayer
 
 			Header h = bitstream.readFrame();
 			if (h == null) return false;
-
+			frames++; // XXX ~Vazkii
+			
 			// sample buffer set when decoder constructed
 			SampleBuffer output = (SampleBuffer) decoder.decodeFrame(h, bitstream);
 
@@ -195,6 +196,7 @@ public class AdvancedPlayer
 	{
 		boolean ret = true;
 		int offset = start;
+		frames = start; // XXX ~Vazkii
 		while (offset-- > 0 && ret) ret = skipFrame();
 		return play(end - start);
 	}
@@ -230,7 +232,7 @@ public class AdvancedPlayer
 	{
 		return listener;
 	}
-
+	
 	/**
 	 * closes the player and notifies <code>PlaybackListener</code>
 	 */
@@ -238,5 +240,22 @@ public class AdvancedPlayer
 	{
 		listener.playbackFinished(createEvent(PlaybackEvent.STOPPED));
 		close();
+	}
+	
+	/* ====================================================================================
+	 * XXX
+	 * Functions added by necessity, not present in the original code.
+	 * ~Vazkii
+	 * ====================================================================================
+	 */
+	
+	public AudioDevice getAudioDevice() 
+	{
+		return audio;
+	}
+	
+	int frames = 0;
+	public int getFrames() {
+		return frames;
 	}
 }

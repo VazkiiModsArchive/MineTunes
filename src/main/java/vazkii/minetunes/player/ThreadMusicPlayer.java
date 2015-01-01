@@ -2,20 +2,24 @@ package vazkii.minetunes.player;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
-import net.minecraft.util.EnumChatFormatting;
-import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.advanced.AdvancedPlayer;
-import vazkii.minetunes.MineTunes;
+import javazoom.jl.player.advanced.PlaybackEvent;
+import javazoom.jl.player.advanced.PlaybackListener;
 import vazkii.minetunes.gui.GuiDevTools;
 
 public class ThreadMusicPlayer extends Thread {
 
+	EventListener listener = new EventListener();
 	AdvancedPlayer player;
-	volatile File queuedFile;
 
-	boolean kill = false;
+	volatile File playingFile;
+	volatile boolean queued = false;
+
+	volatile boolean kill = false;
+	volatile boolean playing = false;
+	volatile boolean paused = false; 
+	volatile int pauseFrames = 0;
 
 	public ThreadMusicPlayer() {
 		setDaemon(true);
@@ -28,23 +32,33 @@ public class ThreadMusicPlayer extends Thread {
 		try {
 			GuiDevTools.debugLog("Starting " + this);
 			while(!kill) {
-				if(queuedFile != null) {
-					GuiDevTools.debugLog("Queued: " + queuedFile.getAbsolutePath());
+				if(queued) {
+					GuiDevTools.debugLog("Queued: " + playingFile.getAbsolutePath());
 					if(player != null)
 						resetPlayer();
-					player = new AdvancedPlayer(new FileInputStream(queuedFile));
-					queuedFile = null;
-					GuiDevTools.debugLog("Player Loaded");
+					player = new AdvancedPlayer(new FileInputStream(playingFile));
+					player.setPlayBackListener(listener);
+					queued = false;
+					GuiDevTools.debugLog("Player (Re)loaded");
 				}
 
 				boolean played = false;
-				if(player != null) {
-					GuiDevTools.debugLog("Playing File");
-					player.play();
+				if(player != null && player.getAudioDevice() != null) {
+					if(pauseFrames == 0) {
+						GuiDevTools.debugLog("Playing File");
+						player.play();
+						playing = true;
+					} else if(!paused) {
+						GuiDevTools.debugLog("Was paused, restarting at " + pauseFrames);
+						int startFrame = pauseFrames;
+						pauseFrames = 0;
+						player.play(startFrame, Integer.MAX_VALUE);
+						playing = true;
+					}
 					played = true;
 				}
 
-				if(played) {
+				if(played && !paused) {
 					GuiDevTools.debugLog("Song done, next...");
 					next();
 				}
@@ -57,10 +71,11 @@ public class ThreadMusicPlayer extends Thread {
 	public void next() {
 		resetPlayer();
 	}
-
+	
 	public void resetPlayer() {
 		GuiDevTools.debugLog("Resetting Player.");
 
+		playing = false;
 		if(player != null)
 			player.close();
 
@@ -69,7 +84,22 @@ public class ThreadMusicPlayer extends Thread {
 
 	public void play(File file) {
 		resetPlayer();
-		queuedFile = file;
+		playingFile = file;
+		queued = true;
+	}
+
+	public void pauseOrPlay() {
+		if(player != null)
+			if(!paused) {
+				GuiDevTools.debugLog("Pausing...");
+				paused = true;
+				if(player.getAudioDevice() != null)
+					player.stop();
+			} else {
+				GuiDevTools.debugLog("Unpaused...");
+				queued = true;
+				paused = false;
+			}
 	}
 
 	public void forceKill() {
@@ -82,5 +112,17 @@ public class ThreadMusicPlayer extends Thread {
 		} catch(Throwable e) {
 			GuiDevTools.logThrowable(e);
 		}
+	}
+
+	class EventListener extends PlaybackListener {
+
+		@Override
+		public void playbackFinished(PlaybackEvent evt) {
+			if(paused) {
+				pauseFrames = evt.getSource().getFrames();
+				GuiDevTools.debugLog("Paused at " + pauseFrames);
+			}
+		}
+
 	}
 }

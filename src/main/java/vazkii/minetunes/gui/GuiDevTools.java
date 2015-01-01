@@ -17,27 +17,29 @@ import vazkii.minetunes.player.chooser.filter.PlaylistFilter;
 
 public class GuiDevTools extends GuiMineTunes {
 
-	private static final int max = 20;
+	private static final int max = 35;
 	private volatile static List<String> debugOut = new ArrayList(max);
 			
 	@Override
 	public void initGui() {
 		buttonList.clear();
 		buttonList.add(new GuiButton(-1, width - 102, height - 22, 100, 20, StatCollector.translateToLocal("minetunes.gui.exit")));
-		buttonList.add(new GuiButton(0, width / 2 - 100, 30, 200, 20, StatCollector.translateToLocal("minetunes.guidev.clear")));
-		buttonList.add(new GuiButton(1, width / 2 - 100, 55, 200, 20, StatCollector.translateToLocal("minetunes.guidev.chooser")));
-		buttonList.add(new GuiButton(2, width / 2 - 100, 80, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playMp3")));
-		buttonList.add(new GuiButton(3, width / 2 - 100, 105, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playLast")));
-		buttonList.add(new GuiButton(4, width / 2 - 100, 130, 200, 20, StatCollector.translateToLocal("minetunes.guidev.resetThread")));
+		
+		buttonList.add(new GuiButton(0, 10, 30, 200, 20, StatCollector.translateToLocal("minetunes.guidev.clear")));
+		buttonList.add(new GuiButton(1, 10, 55, 200, 20, StatCollector.translateToLocal("minetunes.guidev.resetThread")));
+		buttonList.add(new GuiButton(2, 10, 80, 200, 20, StatCollector.translateToLocal("minetunes.guidev.chooser")));
+		buttonList.add(new GuiButton(3, 10, 105, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playMp3")));
+		buttonList.add(new GuiButton(4, 10, 130, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playLast")));
+		buttonList.add(new GuiButton(5, 10, 155, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playPause")));
 	}
 	
 	@Override
 	public void drawScreen(int mx, int my, float partialTicks) {
 		int boxHeight = (buttonList.size() - 1) * 25 + 50; 
-		drawBox(width / 2 - 120, -4, 240, boxHeight);
+		drawBox(0, -4, 220, boxHeight);
 		
 		for(int i = 0; i < debugOut.size(); i++)
-			drawCenteredString(fontRendererObj, debugOut.get(debugOut.size() - i - 1), width / 2, boxHeight + (i + 1) * 10, 0xFFFFFF);
+			fontRendererObj.drawStringWithShadow(debugOut.get(debugOut.size() - i - 1), 240, (i + 1) * 10, 0xFFFFFF);
 		
 		super.drawScreen(mx, my, partialTicks);
 	}
@@ -52,20 +54,24 @@ public class GuiDevTools extends GuiMineTunes {
 			debugOut.clear();
 			break;
 		case 1:
-			new FileSelector(new PlaylistFilter(), JFileChooser.FILES_AND_DIRECTORIES, ActionDebug.instance);
-			break;
-		case 2:
-			new FileSelector(new MusicFilter(), JFileChooser.FILES_ONLY, ActionPlayMp3.instance);
-			break;
-		case 3:
-			ActionPlayMp3.instance.playLast();
-			break;
-		case 4:
 			if(MineTunes.musicPlayerThread != null)
 				MineTunes.musicPlayerThread.forceKill();
 			MineTunes.startThread();
 			debugLog("Reset Thread: " + MineTunes.musicPlayerThread);
 			
+			break;
+		case 2:
+			new FileSelector(new PlaylistFilter(), JFileChooser.FILES_AND_DIRECTORIES, ActionDebug.instance);
+			break;
+		case 3:
+			new FileSelector(new MusicFilter(), JFileChooser.FILES_ONLY, ActionPlayMp3.instance);
+			break;
+		case 4:
+			ActionPlayMp3.instance.playLast();
+			break;
+		case 5:
+			if(MineTunes.musicPlayerThread != null)
+				MineTunes.musicPlayerThread.pauseOrPlay();
 			break;
 		}
 	}
