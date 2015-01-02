@@ -63,9 +63,13 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 		return artist + " - " + title;
 	}
 	
+	public String getSortingKey() {
+		return title + artist + album;
+	}
+	
 	@Override
 	public int compareTo(MP3Metadata o) {
-		return getFullName().compareTo(o.getFullName());
+		return getSortingKey().compareTo(o.getSortingKey());
 	}
 	
 }
