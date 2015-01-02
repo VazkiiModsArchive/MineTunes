@@ -14,7 +14,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION)
 public class MineTunes {
 
-	public static final boolean DEBUG_MODE = ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
+	public static boolean DEBUG_MODE = ManagementFactory.getRuntimeMXBean().getInputArguments().toString().indexOf("-agentlib:jdwp") > 0;
 
 	public volatile static ThreadMusicPlayer musicPlayerThread;
 	public volatile static ThreadPlaylistCreator playlistCreatorThread;
