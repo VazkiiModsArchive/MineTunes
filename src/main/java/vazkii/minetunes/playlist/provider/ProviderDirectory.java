@@ -26,17 +26,16 @@ public class ProviderDirectory extends PlaylistProvider {
 		
 		this.callback = callback;
 
-		Playlist playlist = new Playlist();
 		Set<MP3Metadata> metadataSet = new TreeSet();
 
-		crawlDirectory(file, true, playlist, metadataSet);
-		crawlDirectory(file, false, playlist, metadataSet);
+		crawlDirectory(file, true, metadataSet);
+		crawlDirectory(file, false, metadataSet);
 
-		playlist.metadataList = new ArrayList(metadataSet);
+		Playlist playlist = new Playlist(file, metadataSet);
 		return playlist;
 	}
 
-	private void crawlDirectory(File dir, boolean scan, Playlist playlist, Set<MP3Metadata> metadataSet) {
+	private void crawlDirectory(File dir, boolean scan, Set<MP3Metadata> metadataSet) {
 		GuiDevTools.debugLog("Crawling " + dir.getName());
 
 		for(File file : dir.listFiles(MusicFilter.instance)) {
@@ -44,7 +43,7 @@ public class ProviderDirectory extends PlaylistProvider {
 				continue;
 			
 			if(file.isDirectory())
-				crawlDirectory(file, scan, playlist, metadataSet);
+				crawlDirectory(file, scan, metadataSet);
 			else {
 				if(scan)
 					foundFiles++;

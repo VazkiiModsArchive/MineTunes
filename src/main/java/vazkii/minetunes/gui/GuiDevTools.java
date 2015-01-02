@@ -37,6 +37,8 @@ public class GuiDevTools extends GuiMineTunes {
 		buttonList.add(new GuiButton(5, 10, 155, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playPause")));
 		buttonList.add(new GuiButton(6, 10, 180, 200, 20, StatCollector.translateToLocal("minetunes.guidev.volumeControl")));
 		buttonList.add(new GuiButton(7, 10, 205, 200, 20, StatCollector.translateToLocal("minetunes.guidev.generatePlaylist")));
+		
+		MineTunes.DEBUG_MODE = true;
 	}
 	
 	@Override
@@ -47,6 +49,9 @@ public class GuiDevTools extends GuiMineTunes {
 		for(int i = 0; i < debugOut.size(); i++)
 			fontRendererObj.drawStringWithShadow(debugOut.get(debugOut.size() - i - 1), 240, (i + 1) * 10, 0xFFFFFF);
 		
+		fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("minetunes.guidev.warning1"), 10, 5, 0xFFFFFF);
+		fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("minetunes.guidev.warning2"), 10, 15, 0xFFFFFF);
+		
 		super.drawScreen(mx, my, partialTicks);
 	}
 	
@@ -54,7 +59,7 @@ public class GuiDevTools extends GuiMineTunes {
 	protected void actionPerformed(GuiButton button) {
 		switch(button.id) {
 		case -1:
-			mc.displayGuiScreen(null);
+			mc.displayGuiScreen(new GuiPlaylistManager());
 			break;
 		case 0:
 			debugOut.clear();

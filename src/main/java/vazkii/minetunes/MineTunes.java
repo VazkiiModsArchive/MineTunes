@@ -3,6 +3,8 @@ package vazkii.minetunes;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 
+import vazkii.minetunes.config.CacheHelper;
+import vazkii.minetunes.config.MTConfig;
 import vazkii.minetunes.key.KeyBindings;
 import vazkii.minetunes.lib.LibMisc;
 import vazkii.minetunes.player.ThreadMusicPlayer;
@@ -22,6 +24,7 @@ public class MineTunes {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		KeyBindings.init();
+		MTConfig.findCompoundAndLoad();
 	}
 	
 	public static void startMusicPlayerThread() {

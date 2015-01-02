@@ -2,11 +2,12 @@ package vazkii.minetunes.playlist;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
 import vazkii.minetunes.config.MTConfig;
-import vazkii.minetunes.gui.playlist.GuiPlaylistManager;
+import vazkii.minetunes.gui.GuiPlaylistManager;
 import vazkii.minetunes.playlist.provider.IProviderStateCallback;
 import vazkii.minetunes.playlist.provider.PlaylistProvider;
 import vazkii.minetunes.playlist.provider.ProviderDirectory;
@@ -14,9 +15,15 @@ import vazkii.minetunes.playlist.provider.ProviderM3U;
 
 public class Playlist {
 
-	public List<MP3Metadata> metadataList = new ArrayList();
-
+	public final List<MP3Metadata> metadataList;
+	public final File file;
+	
 	Random rand = new Random();
+	
+	public Playlist(File file, Collection<MP3Metadata> metaSet) {
+		this.file = file;
+		this.metadataList = new ArrayList(metaSet);
+	}
 
 	public static Playlist build(File file, IProviderStateCallback callback) {
 		PlaylistProvider provider = file.isDirectory() ? ProviderDirectory.instance : file.getName().endsWith(".m3u") ? ProviderM3U.instance : null;
@@ -36,8 +43,6 @@ public class Playlist {
 	}
 
 	public int nextSongIndex() {
-		MTConfig.playMode = 3;
-		
 		switch(MTConfig.playMode) {
 		case 1: return repeat();
 		case 2: return loop();

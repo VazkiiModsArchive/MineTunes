@@ -1,10 +1,11 @@
-package vazkii.minetunes.gui.playlist;
+package vazkii.minetunes.gui;
 
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.EnumChatFormatting;
 import scala.collection.parallel.ParIterableLike.Min;
 import vazkii.minetunes.MineTunes;
 import vazkii.minetunes.player.chooser.action.ActionPlayMp3;
@@ -20,7 +21,7 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 		super(parent.width - 200, parent.height - parent.getTopSize(), parent.getTopSize(), 200, 40);
 		this.parent = parent;
 	}
-
+	
 	@Override
 	protected int getSize() {
 		Playlist playlist = parent.getSelectedPlaylist();
@@ -49,7 +50,7 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 	
 	@Override
 	protected void drawSlot(int i, int j, int k, int l, Tessellator tessellator) {
-		Playlist playlist = parent.getCurrentPlaylist();
+		Playlist playlist = parent.getSelectedPlaylist();
 		if(playlist != null) {
 			MP3Metadata metadata = playlist.metadataList.get(i);
 			if(metadata != null) {
@@ -73,12 +74,12 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 				int colorMain = playing ? 0xAAFFFF : 0xFFFFFF;
 				int colorSub = playing ? 0x00AAAA : 0xAAAAAA;
 				int colorLength = playing ? paused ? 0xFF5555 : 0x55FF55 : 0x555555;
-				int colorBg = playing ? paused ? 0x44440000 : 0x44004400 : 0x44000000;
+				int colorBg = 0x44000000;
 				
 				if(!selected)
-					parent.drawRect(s - 6, k, s + listWidth, k + 36, colorBg);
+					parent.drawBox(s - 6, k + 2, listWidth + 6, 32);
 				
-				font.drawStringWithShadow(metadata.title, s, k + 3, colorMain);
+				font.drawStringWithShadow((playing ? EnumChatFormatting.BOLD : "") + metadata.title, s, k + 3, colorMain);
 				font.drawStringWithShadow(metadata.artist, s + 4, k + 13, colorSub);
 				font.drawStringWithShadow(metadata.album, s + 4, k + 23, colorSub);
 				
@@ -88,7 +89,7 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 				if(playing)
 					length = MP3Metadata.getLengthStr((int) (metadata.lengthMs * playedFraction)) + "/" + length;
 				
-				font.drawString(length, (j - 2) / 2 - font.getStringWidth(length), (k + 4) / 2, colorLength);
+				font.drawString(length, (j - 2) / 2 - font.getStringWidth(length), (k + 6) / 2, colorLength);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 			}
 		}

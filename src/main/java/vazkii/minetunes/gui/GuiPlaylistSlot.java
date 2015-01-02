@@ -1,14 +1,8 @@
-package vazkii.minetunes.gui.playlist;
-
-import java.awt.font.FontRenderContext;
+package vazkii.minetunes.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.renderer.Tessellator;
-
-import org.lwjgl.opengl.GL11;
-
 import vazkii.minetunes.playlist.Playlist;
 import vazkii.minetunes.playlist.PlaylistList;
 

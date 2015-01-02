@@ -33,7 +33,7 @@ public abstract class PlaylistProvider {
 				if(percent > 90)
 					format = EnumChatFormatting.GREEN;
 				
-				return String.format(StatCollector.translateToLocal("minetunes.playlist.generator.processing"), name, processedFiles, foundFiles) + format + " (" + percent + "%)";
+				return String.format(StatCollector.translateToLocal("minetunes.playlist.generator.processing"), processedFiles, foundFiles) + format + " (" + percent + "%)";
 			} else return String.format(StatCollector.translateToLocal("minetunes.playlist.generator.scanning"), foundFiles);
  		} else return StatCollector.translateToLocal("minetunes.playlist.generator.starting");
 	}

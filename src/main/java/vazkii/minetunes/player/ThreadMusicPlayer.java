@@ -11,7 +11,7 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 import vazkii.minetunes.gui.GuiDevTools;
-import vazkii.minetunes.gui.playlist.GuiPlaylistManager;
+import vazkii.minetunes.gui.GuiPlaylistManager;
 import vazkii.minetunes.playlist.MP3Metadata;
 import vazkii.minetunes.playlist.Playlist;
 
@@ -85,7 +85,10 @@ public class ThreadMusicPlayer extends Thread {
 		MP3Metadata mp3 = playlist == null ? null : playlist.nextSong();
 		if(mp3 != null)
 			play(mp3);
-		else resetPlayer();
+		else {
+			playingMP3 = null;
+			resetPlayer();
+		}
 	}
 	
 	public void resetPlayer() {

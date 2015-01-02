@@ -4,10 +4,24 @@ minetunes.keys.menu=Main Menu
 
 # Gui Text
 minetunes.gui.title=mineTunes
-minetunes.gui.playlists=Manage Playlists
 minetunes.gui.options=Options
 minetunes.gui.exit=Exit
-minetunes.gui.devTools=Debug Tools
+minetunes.gui.devTools=Dev Tools
+minetunes.gui.showHud_true=Show HUD: Yes
+minetunes.gui.showHud_false=Show HUD: No
+minetunes.gui.move=Move
+minetunes.gui.playMode0=Play Mode: Track
+minetunes.gui.playMode1=Play Mode: Repeat
+minetunes.gui.playMode2=Play Mode: Loop
+minetunes.gui.playMode3=Play Mode: Shuffle
+minetunes.gui.selectPlaylist=Select Playlist
+minetunes.gui.noPlaylists=No Playlists :(
+minetunes.gui.playlistName=Playlist Name
+minetunes.gui.creatingPlaylist=Creating Playlist
+minetunes.gui.delete=Delete
+minetunes.gui.reload=Reload
+minetunes.gui.shiftToActivate=Shift to Activate
+minetunes.gui.playlistCreator=Playlist Creator
 
 # Player Text
 minetunes.player.chooser.filterPlaylist=Folder or Playlist (.m3u)
@@ -16,9 +30,11 @@ minetunes.player.chooser.filterMusic=Music (.mp3)
 # Playlist Generator Text
 minetunes.playlist.generator.starting=Starting
 minetunes.playlist.generator.scanning=Scanning, %s files found
-minetunes.playlist.generator.processing=Processing %s, %s/%s files done
+minetunes.playlist.generator.processing=Processing, %s/%s files done
 
 # Dev Gui Text
+minetunes.guidev.warning1=These are debug options.
+minetunes.guidev.warning2=Use at your own risk!
 minetunes.guidev.clear=Clear Debug Output
 minetunes.guidev.resetThread=Reset Thread
 minetunes.guidev.chooser=Debug File Chooser

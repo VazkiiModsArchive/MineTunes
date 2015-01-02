@@ -22,7 +22,6 @@ public class ProviderM3U extends PlaylistProvider {
 		processedFiles = 0;
 
 		this.callback = callback;
-		Playlist playlist = new Playlist();
 		Set<MP3Metadata> metadataSet = new TreeSet();
 
 		List<String> lines = new ArrayList();
@@ -63,7 +62,7 @@ public class ProviderM3U extends PlaylistProvider {
 			} else GuiDevTools.debugLog(line + " does not exist, skipping");
 		}
 
-		playlist.metadataList = new ArrayList(metadataSet);
+		Playlist playlist = new Playlist(file, metadataSet);
 		return playlist;
 	}
 
