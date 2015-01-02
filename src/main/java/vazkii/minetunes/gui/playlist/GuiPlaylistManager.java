@@ -5,8 +5,8 @@ import vazkii.minetunes.playlist.PlaylistList;
 
 public class GuiPlaylistManager extends GuiMineTunes {
 
-	static int selectedPlaylist = 0;
-	static int selectedSong = 0;
+	public static int selectedPlaylist = 0;
+	public static int selectedSong = 0;
 
 	GuiPlaylistSlot playlistSlot;
 	GuiMusicSlot musicSlot;

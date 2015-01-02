@@ -94,6 +94,7 @@ public class ThreadMusicPlayer extends Thread {
 	public void play(MP3Metadata metadata) {
 		resetPlayer();
 		playingMP3 = metadata;
+		paused = false;
 		queued = true;
 	}
 
@@ -149,6 +150,23 @@ public class ThreadMusicPlayer extends Thread {
 		return playingMP3;
 	}
 
+	public int getFramesPlayed() {
+		return player == null ? 0 : player.getFrames();
+	}
+	
+	public float getFractionPlayed() {
+		int pFrames = getFramesPlayed();
+		int tFrames = playingMP3 == null ? 0 : playingMP3.frameCount;
+		if(pFrames == 0 || tFrames == 0)
+			return 0F;
+		
+		return (float) pFrames / (float) tFrames;
+	}
+	
+	public boolean isPaused() {
+		return paused && playingMP3 != null;
+	}
+	
 	public void forceKill() {
 		try {
 			resetPlayer();

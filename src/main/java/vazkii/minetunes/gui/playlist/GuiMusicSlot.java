@@ -62,16 +62,21 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 				int s = j + 20 - listWidth;
 
 				boolean playing = false;
+				float playedFraction = 0;
+				boolean paused = false;
 				if(MineTunes.musicPlayerThread != null) {
 					MP3Metadata playingMeta = MineTunes.musicPlayerThread.getPlayingMetadata();
-					if(playingMeta != null && playingMeta.isEqualFile(metadata))
+					if(playingMeta != null && playingMeta.isEqualFile(metadata)) {
 						playing = true;
+						playedFraction = MineTunes.musicPlayerThread.getFractionPlayed();
+						paused = MineTunes.musicPlayerThread.isPaused();
+					}
 				}
 				
 				int colorMain = playing ? 0xAAFFFF : 0xFFFFFF;
 				int colorSub = playing ? 0x00AAAA : 0xAAAAAA;
-				int colorLength = playing ? 0x55FF55 : 0x555555;
-				int colorBg = playing ? 0x44004400 : 0x44000000;
+				int colorLength = playing ? paused ? 0xFF5555 : 0x55FF55 : 0x555555;
+				int colorBg = playing ? paused ? 0x44440000 : 0x44004400 : 0x44000000;
 				
 				if(!selected)
 					parent.drawRect(s - 6, k, s + listWidth, k + 36, colorBg);
@@ -81,7 +86,12 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 				font.drawStringWithShadow(metadata.album, s + 4, k + 23, colorSub);
 				
 				GL11.glScalef(2F, 2F, 2F);
-				font.drawString(metadata.length, (j - 2) / 2 - font.getStringWidth(metadata.length), (k + 4) / 2, colorLength);
+				String length = metadata.length;
+				
+				if(playing)
+					length = MP3Metadata.getLengthStr((int) (metadata.lengthMs * playedFraction)) + "/" + length;
+				
+				font.drawString(length, (j - 2) / 2 - font.getStringWidth(length), (k + 4) / 2, colorLength);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 			}
 		}

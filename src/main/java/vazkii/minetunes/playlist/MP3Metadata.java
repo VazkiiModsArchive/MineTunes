@@ -19,6 +19,7 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 	public final String filename;
 	
 	public final String length;
+	public final long lengthMs;
 	public final int frameCount;
 	
 	public MP3Metadata(File file, Mp3File mp3) {
@@ -47,16 +48,19 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 			this.genre = "(Genre not Defined)";
 		else this.genre = genre;
 		
-		long ms = mp3.getLengthInMilliseconds();
-		int m =(int) (ms / (60 * 1000));
-		int s = (int) ((ms / 1000) % 60);
-		length = String.format("%d:%02d", m, s);
-		
+		lengthMs = mp3.getLengthInMilliseconds();
+		length = getLengthStr(lengthMs); 
 		frameCount = mp3.getFrameCount();
 	}
 
 	public MP3Metadata(File file) throws UnsupportedTagException, InvalidDataException, IOException {
 		this(file, new Mp3File(file));
+	}
+	
+	public static String getLengthStr(long ms) {
+		int m = (int) (ms / (60 * 1000));
+		int s = (int) ((ms / 1000) % 60);
+		return String.format("%d:%02d", m, s);
 	}
 	
 	public boolean isEqualFile(MP3Metadata data) {
