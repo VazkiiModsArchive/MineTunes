@@ -72,7 +72,7 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 	}
 	
 	public String getSortingKey() {
-		return title + artist + album;
+		return (title + artist + album).toLowerCase();
 	}
 	
 	@Override
