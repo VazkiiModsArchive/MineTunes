@@ -3,12 +3,25 @@ package vazkii.minetunes.playlist;
 import java.io.File;
 import java.io.IOException;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import com.mpatric.mp3agic.ID3Wrapper;
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.Mp3File;
 import com.mpatric.mp3agic.UnsupportedTagException;
 
 public class MP3Metadata implements Comparable<MP3Metadata> {
+
+	private static final String TAG_ARTIST = "artist";
+	private static final String TAG_TITLE = "title";
+	private static final String TAG_ALBUM = "album";
+	private static final String TAG_GENRE = "genre";
+	private static final String TAG_FILENAME = "filename";
+	private static final String TAG_LENGTH = "length";
+	private static final String TAG_LENGTHMS = "lengthMs";
+	private static final String TAG_FRAME_COUNT = "frameCount";
+	
+	private static final String TAG_FILE_PATH = "filepath";
 
 	public final File file;
 	
@@ -55,6 +68,30 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 
 	public MP3Metadata(File file) throws UnsupportedTagException, InvalidDataException, IOException {
 		this(file, new Mp3File(file));
+	}
+	
+	public MP3Metadata(NBTTagCompound cmp) {
+		artist = cmp.getString(TAG_ARTIST);
+		title = cmp.getString(TAG_TITLE);
+		album = cmp.getString(TAG_ALBUM);
+		genre = cmp.getString(TAG_GENRE);
+		filename = cmp.getString(TAG_FILENAME);
+		length = cmp.getString(TAG_LENGTH);
+		lengthMs = cmp.getLong(TAG_LENGTHMS);
+		frameCount = cmp.getInteger(TAG_FRAME_COUNT);
+		file = new File(cmp.getString(TAG_FILE_PATH));
+	}
+	
+	public void writeToNBT(NBTTagCompound cmp) {
+		cmp.setString(TAG_ARTIST, artist);
+		cmp.setString(TAG_TITLE, title);
+		cmp.setString(TAG_ALBUM, album);
+		cmp.setString(TAG_GENRE, genre);
+		cmp.setString(TAG_FILENAME, filename);
+		cmp.setString(TAG_LENGTH, length);
+		cmp.setLong(TAG_LENGTHMS, lengthMs);
+		cmp.setInteger(TAG_FRAME_COUNT, frameCount);
+		cmp.setString(TAG_FILE_PATH, file.getAbsolutePath());
 	}
 	
 	public static String getLengthStr(long ms) {

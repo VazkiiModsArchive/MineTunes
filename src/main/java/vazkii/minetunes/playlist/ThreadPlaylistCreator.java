@@ -38,6 +38,8 @@ public class ThreadPlaylistCreator extends Thread implements IProviderStateCallb
 			PlaylistList.playlists.put(name, playlist);
 		} else GuiDevTools.debugLog("Not adding Playlist to set, null or empty.");
 		
+		PlaylistList.findCompoundAndWrite();
+		
 		MineTunes.playlistCreatorThread = null;
 	}
 

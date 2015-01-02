@@ -182,7 +182,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
 			PlaylistList.playlistNames.remove(selectedPlaylist);
 			PlaylistList.playlists.remove(playlistName);
 			selectedPlaylist = 0;
-
+			
+			PlaylistList.findCompoundAndWrite();
 			
 			break;
 		case 7:
