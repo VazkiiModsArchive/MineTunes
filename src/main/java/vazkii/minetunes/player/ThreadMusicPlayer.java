@@ -9,6 +9,7 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 import vazkii.minetunes.gui.GuiDevTools;
+import vazkii.minetunes.playlist.MP3Metadata;
 
 public class ThreadMusicPlayer extends Thread {
 
@@ -20,7 +21,7 @@ public class ThreadMusicPlayer extends Thread {
 	EventListener listener = new EventListener();
 	AdvancedPlayer player;
 
-	volatile File playingFile;
+	volatile MP3Metadata playingMP3;
 	volatile boolean queued = false;
 
 	volatile boolean kill = false;
@@ -39,11 +40,11 @@ public class ThreadMusicPlayer extends Thread {
 		try {
 			GuiDevTools.debugLog("Starting " + this);
 			while(!kill) {
-				if(queued) {
-					GuiDevTools.debugLog("Queued: " + playingFile.getAbsolutePath());
+				if(queued && playingMP3 != null) {
+					GuiDevTools.debugLog("Queued: " + playingMP3.file.getAbsolutePath());
 					if(player != null)
 						resetPlayer();
-					player = new AdvancedPlayer(new FileInputStream(playingFile));
+					player = new AdvancedPlayer(new FileInputStream(playingMP3.file));
 					player.setPlayBackListener(listener);
 					queued = false;
 					GuiDevTools.debugLog("Player (Re)loaded");
@@ -65,7 +66,7 @@ public class ThreadMusicPlayer extends Thread {
 					played = true;
 				}
 
-				if(played && !paused) {
+				if(played && !paused && !queued) {
 					GuiDevTools.debugLog("Song done, next...");
 					next();
 				}
@@ -76,6 +77,7 @@ public class ThreadMusicPlayer extends Thread {
 	}
 
 	public void next() {
+		playingMP3 = null;
 		resetPlayer();
 	}
 	
@@ -89,9 +91,9 @@ public class ThreadMusicPlayer extends Thread {
 		player = null;
 	}
 
-	public void play(File file) {
+	public void play(MP3Metadata metadata) {
 		resetPlayer();
-		playingFile = file;
+		playingMP3 = metadata;
 		queued = true;
 	}
 
@@ -141,6 +143,10 @@ public class ThreadMusicPlayer extends Thread {
 		float width = MAX_GAIN - MIN_GAIN;
 		float rel = Math.abs(gain - MIN_GAIN);
 		return rel / Math.abs(width);
+	}
+	
+	public MP3Metadata getPlayingMetadata() {
+		return playingMP3;
 	}
 
 	public void forceKill() {

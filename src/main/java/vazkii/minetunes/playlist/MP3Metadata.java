@@ -59,6 +59,10 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 		this(file, new Mp3File(file));
 	}
 	
+	public boolean isEqualFile(MP3Metadata data) {
+		return this == data || data.file == file || data.file.getAbsolutePath().equals(file.getAbsolutePath());
+	}
+	
 	public String getFullName() {
 		return artist + " - " + title;
 	}

@@ -5,6 +5,8 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
+import scala.collection.parallel.ParIterableLike.Min;
+import vazkii.minetunes.MineTunes;
 import vazkii.minetunes.player.chooser.action.ActionPlayMp3;
 import vazkii.minetunes.playlist.MP3Metadata;
 import vazkii.minetunes.playlist.Playlist;
@@ -36,7 +38,7 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 			String name = PlaylistList.playlistNames.get(parent.getSelectedPlaylist());
 			Playlist playlist = PlaylistList.playlists.get(name);
 			MP3Metadata metadata = playlist.metadataList.get(i);
-			ActionPlayMp3.instance.play(metadata.file);
+			ActionPlayMp3.instance.play(metadata);
 		}
 		
 		parent.selectSong(i);
@@ -58,16 +60,28 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 				boolean selected = isSelected(i);
 				
 				int s = j + 20 - listWidth;
+
+				boolean playing = false;
+				if(MineTunes.musicPlayerThread != null) {
+					MP3Metadata playingMeta = MineTunes.musicPlayerThread.getPlayingMetadata();
+					if(playingMeta != null && playingMeta.isEqualFile(metadata))
+						playing = true;
+				}
+				
+				int colorMain = playing ? 0xAAFFFF : 0xFFFFFF;
+				int colorSub = playing ? 0x00AAAA : 0xAAAAAA;
+				int colorLength = playing ? 0x55FF55 : 0x555555;
+				int colorBg = playing ? 0x44004400 : 0x44000000;
 				
 				if(!selected)
-					parent.drawRect(s - 6, k, s + listWidth, k + 36, 0x44000000);
+					parent.drawRect(s - 6, k, s + listWidth, k + 36, colorBg);
 				
-				font.drawStringWithShadow(metadata.title, s, k + 3, 0xFFFFFF);
-				font.drawStringWithShadow(metadata.artist, s + 4, k + 13, 0xAAAAAA);
-				font.drawStringWithShadow(metadata.album, s + 4, k + 23, 0xAAAAAA);
+				font.drawStringWithShadow(metadata.title, s, k + 3, colorMain);
+				font.drawStringWithShadow(metadata.artist, s + 4, k + 13, colorSub);
+				font.drawStringWithShadow(metadata.album, s + 4, k + 23, colorSub);
 				
 				GL11.glScalef(2F, 2F, 2F);
-				font.drawString(metadata.length, (j - 10) / 2 - font.getStringWidth(metadata.length), (k + 12) / 2, 0x555555);
+				font.drawString(metadata.length, (j - 2) / 2 - font.getStringWidth(metadata.length), (k + 4) / 2, colorLength);
 				GL11.glScalef(0.5F, 0.5F, 0.5F);
 			}
 		}
