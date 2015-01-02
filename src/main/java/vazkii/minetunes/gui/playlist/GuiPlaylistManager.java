@@ -19,8 +19,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	
 	@Override
 	public void drawScreen(int mx, int my, float partialTicks) {
-		playlistSlot.drawScreen(mx, my, partialTicks);
 		musicSlot.drawScreen(mx, my, partialTicks);
+		playlistSlot.drawScreen(mx, my, partialTicks);
 
 		drawRect(0, 0, width, getTopSize(), 0xFF000000);
 		drawRect(197, getTopSize(), 200, height, 0xFF000000);
