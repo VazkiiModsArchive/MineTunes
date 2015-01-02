@@ -34,7 +34,7 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 		
 		if(artist == null || title == null || artist.isEmpty() || title.isEmpty()) {
 			this.artist = "";
-			this.title = filename.replace("\\.mp3$", "");
+			this.title = filename.replace(".mp3", "");
 		} else {
 			this.artist = artist;
 			this.title = title;

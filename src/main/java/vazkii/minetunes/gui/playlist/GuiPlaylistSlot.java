@@ -33,7 +33,7 @@ public class GuiPlaylistSlot extends GuiScrollingListMT {
 
 	@Override
 	protected boolean isSelected(int i) {
-		return parent.getSelectedPlaylist() == i;
+		return parent.getSelectedPlaylistIndex() == i;
 	}
 
 	@Override

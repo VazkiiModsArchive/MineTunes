@@ -23,22 +23,20 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 
 	@Override
 	protected int getSize() {
-		int index = parent.getSelectedPlaylist();
-		if(index >= PlaylistList.playlistNames.size())
-			return 0;
-			
-		String name = PlaylistList.playlistNames.get(parent.getSelectedPlaylist());
-		Playlist playlist = PlaylistList.playlists.get(name);
+		Playlist playlist = parent.getSelectedPlaylist();
 		return playlist == null ? 0 : playlist.metadataList.size();
 	}
 
 	@Override
 	protected void elementClicked(int i, boolean doubleclick) {
 		if(doubleclick) {
-			String name = PlaylistList.playlistNames.get(parent.getSelectedPlaylist());
-			Playlist playlist = PlaylistList.playlists.get(name);
-			MP3Metadata metadata = playlist.metadataList.get(i);
-			ActionPlayMp3.instance.play(metadata);
+			int index = parent.getSelectedPlaylistIndex();
+			Playlist playlist = parent.getSelectedPlaylist();
+			if(playlist != null) {
+				MP3Metadata metadata = playlist.metadataList.get(i);
+				ActionPlayMp3.instance.play(metadata);
+				parent.selectCurrentPlaylist(index, i);
+			}
 		}
 		
 		parent.selectSong(i);
@@ -48,11 +46,10 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 	protected boolean isSelected(int i) {
 		return parent.getSelectedSong() == i;
 	}
-
+	
 	@Override
 	protected void drawSlot(int i, int j, int k, int l, Tessellator tessellator) {
-		String name = PlaylistList.playlistNames.get(parent.getSelectedPlaylist());
-		Playlist playlist = PlaylistList.playlists.get(name);
+		Playlist playlist = parent.getCurrentPlaylist();
 		if(playlist != null) {
 			MP3Metadata metadata = playlist.metadataList.get(i);
 			if(metadata != null) {

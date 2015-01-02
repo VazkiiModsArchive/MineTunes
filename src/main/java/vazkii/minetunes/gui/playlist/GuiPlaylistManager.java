@@ -1,13 +1,18 @@
 package vazkii.minetunes.gui.playlist;
 
+import vazkii.minetunes.gui.GuiDevTools;
 import vazkii.minetunes.gui.GuiMineTunes;
+import vazkii.minetunes.playlist.Playlist;
 import vazkii.minetunes.playlist.PlaylistList;
 
 public class GuiPlaylistManager extends GuiMineTunes {
 
-	public static int selectedPlaylist = 0;
-	public static int selectedSong = 0;
-
+	public volatile static int currentPlaylist = 0;
+	public volatile static int currentSong = 0;
+	
+	static int selectedPlaylist = 0;
+	static int selectedSong = 0;
+	
 	GuiPlaylistSlot playlistSlot;
 	GuiMusicSlot musicSlot;
 
@@ -37,7 +42,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		selectedSong = 0;
 	}
 	
-	public int getSelectedPlaylist() {
+	public int getSelectedPlaylistIndex() {
 		return selectedPlaylist;
 	}
 	
@@ -47,6 +52,39 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	
 	public int getSelectedSong() {
 		return selectedSong;
+	}
+	
+	public Playlist getSelectedPlaylist() {
+		return getPlaylist(getSelectedPlaylistIndex());
+	}
+	
+	public static void selectCurrentPlaylist(int playlist, int song) {
+		currentPlaylist = playlist;
+		currentSong = song;
+	}
+	
+	public static int getCurrentPlaylistIndex() {
+		return currentPlaylist;
+	}
+	
+	public static void selectCurrentSong(int song) {
+		currentSong = song;
+	}
+	
+	public static int getCurrentSong() {
+		return currentSong;
+	}
+	
+	public static Playlist getCurrentPlaylist() {
+		return getPlaylist(getCurrentPlaylistIndex());
+	}
+	
+	public static Playlist getPlaylist(int index) {
+		if(index >= PlaylistList.playlistNames.size())
+			return null;
+		
+		String name = PlaylistList.playlistNames.get(index);
+		return PlaylistList.playlists.get(name);
 	}
 	
 }

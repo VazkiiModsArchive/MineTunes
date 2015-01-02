@@ -3,13 +3,17 @@ package vazkii.minetunes.player;
 import java.io.File;
 import java.io.FileInputStream;
 
+import com.mpatric.mp3agic.Mp3File;
+
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.JavaSoundAudioDevice;
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
 import javazoom.jl.player.advanced.PlaybackListener;
 import vazkii.minetunes.gui.GuiDevTools;
+import vazkii.minetunes.gui.playlist.GuiPlaylistManager;
 import vazkii.minetunes.playlist.MP3Metadata;
+import vazkii.minetunes.playlist.Playlist;
 
 public class ThreadMusicPlayer extends Thread {
 
@@ -77,8 +81,11 @@ public class ThreadMusicPlayer extends Thread {
 	}
 
 	public void next() {
-		playingMP3 = null;
-		resetPlayer();
+		Playlist playlist = GuiPlaylistManager.getCurrentPlaylist();
+		MP3Metadata mp3 = playlist == null ? null : playlist.nextSong();
+		if(mp3 != null)
+			play(mp3);
+		else resetPlayer();
 	}
 	
 	public void resetPlayer() {
