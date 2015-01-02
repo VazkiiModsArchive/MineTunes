@@ -36,7 +36,7 @@ public class GuiDevTools extends GuiMineTunes {
 		buttonList.add(new GuiButton(4, 10, 130, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playLast")));
 		buttonList.add(new GuiButton(5, 10, 155, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playPause")));
 		buttonList.add(new GuiButton(6, 10, 180, 200, 20, StatCollector.translateToLocal("minetunes.guidev.volumeControl")));
-		buttonList.add(new GuiButton(7, 10, 180, 200, 20, StatCollector.translateToLocal("minetunes.guidev.generatePlaylist")));
+		buttonList.add(new GuiButton(7, 10, 205, 200, 20, StatCollector.translateToLocal("minetunes.guidev.generatePlaylist")));
 	}
 	
 	@Override
