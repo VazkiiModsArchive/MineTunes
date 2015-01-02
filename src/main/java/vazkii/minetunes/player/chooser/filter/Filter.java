@@ -6,7 +6,7 @@ import javax.swing.filechooser.FileFilter;
 
 import net.minecraft.util.StatCollector;
 
-public class Filter extends FileFilter {
+public class Filter extends FileFilter implements java.io.FileFilter {
 
 	String desc;
 	String accept;

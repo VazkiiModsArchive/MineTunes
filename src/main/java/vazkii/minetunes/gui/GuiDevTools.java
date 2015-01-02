@@ -2,6 +2,7 @@ package vazkii.minetunes.gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 
@@ -11,6 +12,7 @@ import net.minecraft.util.StatCollector;
 import vazkii.minetunes.MineTunes;
 import vazkii.minetunes.player.chooser.FileSelector;
 import vazkii.minetunes.player.chooser.action.ActionDebug;
+import vazkii.minetunes.player.chooser.action.ActionMakePlaylist;
 import vazkii.minetunes.player.chooser.action.ActionPlayMp3;
 import vazkii.minetunes.player.chooser.filter.MusicFilter;
 import vazkii.minetunes.player.chooser.filter.PlaylistFilter;
@@ -20,6 +22,8 @@ public class GuiDevTools extends GuiMineTunes {
 	private static final int max = 35;
 	private volatile static List<String> debugOut = new ArrayList(max);
 			
+	Random rand = new Random();
+	
 	@Override
 	public void initGui() {
 		buttonList.clear();
@@ -32,6 +36,7 @@ public class GuiDevTools extends GuiMineTunes {
 		buttonList.add(new GuiButton(4, 10, 130, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playLast")));
 		buttonList.add(new GuiButton(5, 10, 155, 200, 20, StatCollector.translateToLocal("minetunes.guidev.playPause")));
 		buttonList.add(new GuiButton(6, 10, 180, 200, 20, StatCollector.translateToLocal("minetunes.guidev.volumeControl")));
+		buttonList.add(new GuiButton(7, 10, 180, 200, 20, StatCollector.translateToLocal("minetunes.guidev.generatePlaylist")));
 	}
 	
 	@Override
@@ -57,15 +62,15 @@ public class GuiDevTools extends GuiMineTunes {
 		case 1:
 			if(MineTunes.musicPlayerThread != null)
 				MineTunes.musicPlayerThread.forceKill();
-			MineTunes.startThread();
+			MineTunes.startMusicPlayerThread();
 			debugLog("Reset Thread: " + MineTunes.musicPlayerThread);
 			
 			break;
 		case 2:
-			new FileSelector(new PlaylistFilter(), JFileChooser.FILES_AND_DIRECTORIES, ActionDebug.instance);
+			new FileSelector(PlaylistFilter.instance, JFileChooser.FILES_AND_DIRECTORIES, ActionDebug.instance);
 			break;
 		case 3:
-			new FileSelector(new MusicFilter(), JFileChooser.FILES_ONLY, ActionPlayMp3.instance);
+			new FileSelector(MusicFilter.instance, JFileChooser.FILES_ONLY, ActionPlayMp3.instance);
 			break;
 		case 4:
 			ActionPlayMp3.instance.playLast();
@@ -82,7 +87,20 @@ public class GuiDevTools extends GuiMineTunes {
 				debugLog("Audio Gain: " + gain + " (Relative Volume: " + MineTunes.musicPlayerThread.getRelativeVolume(gain) + ")");
 			}
 			break;
+		case 7:
+			new FileSelector(PlaylistFilter.instance, JFileChooser.FILES_AND_DIRECTORIES, ActionMakePlaylist.instance.withName(randomPlaylistName()));
+			break;
 		}
+	}
+	
+	private String randomPlaylistName() {
+		char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
+		
+		String name = "";
+		for(int i = 0; i < 6; i++)
+			name += chars[rand.nextInt(chars.length)];
+		
+		return name;
 	}
 	
 	public static void debugLog(String s) {

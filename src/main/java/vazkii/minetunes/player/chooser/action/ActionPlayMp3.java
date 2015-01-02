@@ -18,7 +18,7 @@ public class ActionPlayMp3 implements ISelectorAction {
 	
 	public void play(File file) {
 		if(MineTunes.musicPlayerThread == null)
-			MineTunes.startThread();
+			MineTunes.startMusicPlayerThread();
 		
 		MineTunes.musicPlayerThread.play(file);
 		ActionDebug.instance.select(file);

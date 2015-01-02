@@ -13,6 +13,11 @@ minetunes.gui.devTools=Debug Tools
 minetunes.player.chooser.filterPlaylist=Folder or Playlist (.m3u)
 minetunes.player.chooser.filterMusic=Music (.mp3)
 
+# Playlist Generator Text
+minetunes.playlist.generator.starting=Starting
+minetunes.playlist.generator.scanning=Scanning, %s files found
+minetunes.playlist.generator.processing=Processing, %s/%s files done
+
 # Dev Gui Text
 minetunes.guidev.clear=Clear Debug Output
 minetunes.guidev.resetThread=Reset Thread
@@ -21,3 +26,4 @@ minetunes.guidev.playMp3=Play .mp3
 minetunes.guidev.playLast=Play Last .mp3
 minetunes.guidev.playPause=Play/Pause
 minetunes.guidev.volumeControl=Volume Control [+ / -(shift)]
+minetunes.guidev.generatePlaylist=Generate Playlist
