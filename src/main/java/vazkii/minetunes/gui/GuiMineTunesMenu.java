@@ -6,6 +6,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import vazkii.minetunes.MineTunes;
+import vazkii.minetunes.gui.playlist.GuiPlaylistManager;
 
 public class GuiMineTunesMenu extends GuiMineTunes {
 
@@ -38,6 +39,7 @@ public class GuiMineTunesMenu extends GuiMineTunes {
 	protected void actionPerformed(GuiButton button) {
 		switch(button.id) {
 		case 0: 
+			mc.displayGuiScreen(new GuiPlaylistManager());
 			break;
 		case 1:
 			break;

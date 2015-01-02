@@ -2,6 +2,9 @@ package vazkii.minetunes.playlist.provider;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
@@ -24,13 +27,16 @@ public class ProviderDirectory extends PlaylistProvider {
 		this.callback = callback;
 
 		Playlist playlist = new Playlist();
-		crawlDirectory(file, true, playlist);
-		crawlDirectory(file, false, playlist);
+		Set<MP3Metadata> metadataSet = new TreeSet();
 
+		crawlDirectory(file, true, playlist, metadataSet);
+		crawlDirectory(file, false, playlist, metadataSet);
+
+		playlist.metadataList = new ArrayList(metadataSet);
 		return playlist;
 	}
 
-	private void crawlDirectory(File dir, boolean scan, Playlist playlist) {
+	private void crawlDirectory(File dir, boolean scan, Playlist playlist, Set<MP3Metadata> metadataSet) {
 		GuiDevTools.debugLog("Crawling " + dir.getName());
 
 		for(File file : dir.listFiles(MusicFilter.instance)) {
@@ -38,12 +44,13 @@ public class ProviderDirectory extends PlaylistProvider {
 				continue;
 			
 			if(file.isDirectory())
-				crawlDirectory(file, scan, playlist);
+				crawlDirectory(file, scan, playlist, metadataSet);
 			else {
 				if(scan)
 					foundFiles++;
 				else try {
-					playlist.metadataSet.add(new MP3Metadata(file));
+					name = file.getName();
+					metadataSet.add(new MP3Metadata(file));
 					processedFiles++;
 				} catch(Exception e) {
 					e.printStackTrace();

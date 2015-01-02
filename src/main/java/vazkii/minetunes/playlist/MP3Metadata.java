@@ -16,18 +16,36 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 	public final String title;
 	public final String album;
 	public final String genre;
+	public final String filename;
 	
 	public final String length;
 	public final int frameCount;
 	
 	public MP3Metadata(File file, Mp3File mp3) {
 		this.file = file;
+		filename = file.getName();
 		
 		ID3Wrapper id3 = new ID3Wrapper(mp3.getId3v1Tag(), mp3.getId3v2Tag());
-		artist = id3.getArtist();
-		title = id3.getTitle();
-		album = id3.getAlbum();
-		genre = id3.getGenreDescription();
+		String artist = id3.getArtist();
+		String title = id3.getTitle();
+		String album = id3.getAlbum();
+		String genre = id3.getGenreDescription();
+		
+		if(artist == null || title == null || artist.isEmpty() || title.isEmpty()) {
+			this.artist = "";
+			this.title = filename.replace("\\.mp3$", "");
+		} else {
+			this.artist = artist;
+			this.title = title;
+		}
+		
+		if(album == null || album.isEmpty())
+			this.album = "(No Album)";
+		else this.album = album;
+		
+		if(genre == null || genre.isEmpty())
+			this.genre = "(Genre not Defined)";
+		else this.genre = genre;
 		
 		long ms = mp3.getLengthInMilliseconds();
 		int m =(int) (ms / (60 * 1000));

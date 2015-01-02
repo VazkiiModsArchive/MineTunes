@@ -36,10 +36,9 @@ public class FileSelector extends JFrame {
 			fileChooser.addChoosableFileFilter(filter);
 		}
 		fileChooser.setFileSelectionMode(type);
-		
-		int i = fileChooser.showOpenDialog(this);
+		setAlwaysOnTop(true);
 
-		if(i == JFileChooser.APPROVE_OPTION) {
+		if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
 			action.select(file);
 			dispose();

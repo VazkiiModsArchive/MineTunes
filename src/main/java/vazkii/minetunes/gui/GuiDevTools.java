@@ -42,7 +42,7 @@ public class GuiDevTools extends GuiMineTunes {
 	@Override
 	public void drawScreen(int mx, int my, float partialTicks) {
 		int boxHeight = (buttonList.size() - 1) * 25 + 50; 
-		drawBox(0, -4, 220, boxHeight);
+		drawBox(-4, -4, 224, boxHeight);
 		
 		for(int i = 0; i < debugOut.size(); i++)
 			fontRendererObj.drawStringWithShadow(debugOut.get(debugOut.size() - i - 1), 240, (i + 1) * 10, 0xFFFFFF);

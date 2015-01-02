@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import vazkii.minetunes.gui.GuiDevTools;
 import vazkii.minetunes.playlist.MP3Metadata;
@@ -21,6 +23,7 @@ public class ProviderM3U extends PlaylistProvider {
 
 		this.callback = callback;
 		Playlist playlist = new Playlist();
+		Set<MP3Metadata> metadataSet = new TreeSet();
 
 		List<String> lines = new ArrayList();
 
@@ -50,7 +53,8 @@ public class ProviderM3U extends PlaylistProvider {
 			File mp3 = new File(parent, line);
 			if(mp3.exists()) {
 				try {
-					playlist.metadataSet.add(new MP3Metadata(mp3));
+					name = line;
+					metadataSet.add(new MP3Metadata(mp3));
 					processedFiles++;
 					updateState();
 				} catch (Exception e) {
@@ -59,6 +63,7 @@ public class ProviderM3U extends PlaylistProvider {
 			} else GuiDevTools.debugLog(line + " does not exist, skipping");
 		}
 
+		playlist.metadataList = new ArrayList(metadataSet);
 		return playlist;
 	}
 

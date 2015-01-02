@@ -16,7 +16,7 @@ minetunes.player.chooser.filterMusic=Music (.mp3)
 # Playlist Generator Text
 minetunes.playlist.generator.starting=Starting
 minetunes.playlist.generator.scanning=Scanning, %s files found
-minetunes.playlist.generator.processing=Processing, %s/%s files done
+minetunes.playlist.generator.processing=Processing %s, %s/%s files done
 
 # Dev Gui Text
 minetunes.guidev.clear=Clear Debug Output

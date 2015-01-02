@@ -12,6 +12,7 @@ public abstract class PlaylistProvider {
 	
 	int foundFiles = 0;
 	int processedFiles = 0;
+	String name = "";
 	
 	public abstract Playlist provide(File file, IProviderStateCallback callback);
 	
@@ -32,7 +33,7 @@ public abstract class PlaylistProvider {
 				if(percent > 90)
 					format = EnumChatFormatting.GREEN;
 				
-				return String.format(StatCollector.translateToLocal("minetunes.playlist.generator.processing"), processedFiles, foundFiles) + format + " (" + percent + "%)";
+				return String.format(StatCollector.translateToLocal("minetunes.playlist.generator.processing"), name, processedFiles, foundFiles) + format + " (" + percent + "%)";
 			} else return String.format(StatCollector.translateToLocal("minetunes.playlist.generator.scanning"), foundFiles);
  		} else return StatCollector.translateToLocal("minetunes.playlist.generator.starting");
 	}

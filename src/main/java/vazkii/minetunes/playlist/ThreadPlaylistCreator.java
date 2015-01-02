@@ -24,15 +24,17 @@ public class ThreadPlaylistCreator extends Thread implements IProviderStateCallb
 	
 	@Override
 	public void run() {
-		while(PlaylistList.playlists.containsKey(name))
+		while(PlaylistList.playlistNames.contains(name))
 			name += "_";
 		
 		GuiDevTools.debugLog("Building Playlist with name " + name);
 		
 		Playlist playlist = Playlist.build(file, this);
-		if(playlist != null && playlist.metadataSet.size() > 0) {
+		if(playlist != null && playlist.metadataList.size() > 0) {
 			GuiDevTools.debugLog("Valid Playlist, adding to set");
-			GuiDevTools.debugLog("MP3 Count: " + playlist.metadataSet.size());
+			GuiDevTools.debugLog("MP3 Count: " + playlist.metadataList.size());
+			
+			PlaylistList.playlistNames.add(name);
 			PlaylistList.playlists.put(name, playlist);
 		} else GuiDevTools.debugLog("Not adding Playlist to set, null or empty.");
 		
