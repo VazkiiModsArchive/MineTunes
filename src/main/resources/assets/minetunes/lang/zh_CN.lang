@@ -1,0 +1,51 @@
+# Keybinds
+minetunes.key.category=MineTunes Keybinds
+minetunes.keys.menu=主菜单
+minetunes.keys.playpause=播放/暂停
+minetunes.keys.plus=降低音量/上一首
+minetunes.keys.minus=增大音量/下一首
+
+# Gui Text
+minetunes.gui.title=mineTunes
+minetunes.gui.options=设置
+minetunes.gui.exit=退出
+minetunes.gui.devTools=调试
+minetunes.gui.showHud_true=显示HUD: 是
+minetunes.gui.showHud_false=显示HUD: 否
+minetunes.gui.move=移动
+minetunes.gui.playMode0=播放模式: 顺序播放
+minetunes.gui.playMode1=播放模式: 列表循环
+minetunes.gui.playMode2=播放模式: 单曲循环
+minetunes.gui.playMode3=播放模式: 随机播放
+minetunes.gui.selectPlaylist=选择列表
+minetunes.gui.noPlaylists=无播放列表
+minetunes.gui.playlistName=列表名
+minetunes.gui.creatingPlaylist=创建播放列表
+minetunes.gui.delete=删除
+minetunes.gui.reload=刷新
+minetunes.gui.shiftToActivate=按住Shift进行选择
+minetunes.gui.playlistCreator=列表创建人
+minetunes.gui.clickToSet=左键选定位置
+minetunes.gui.escapeToReset=按空格键归位
+minetunes.gui.volume=音量: %s
+
+# Player Text
+minetunes.player.chooser.filterPlaylist=文件夹/播放列表(.m3u)
+minetunes.player.chooser.filterMusic=音频文件(.mp3)
+
+# Playlist Generator Text
+minetunes.playlist.generator.starting=开始生成列表
+minetunes.playlist.generator.scanning=搜索中,已找到%s个音频文件
+minetunes.playlist.generator.processing=生成中,进度%s/%s
+
+# Dev Gui Text
+minetunes.guidev.warning1=使用调试设置具有一定风险,
+minetunes.guidev.warning2=请自行承担!
+minetunes.guidev.clear=清空调试输出
+minetunes.guidev.resetThread=重置线程
+minetunes.guidev.chooser=选择文件
+minetunes.guidev.playMp3=播放.mp3
+minetunes.guidev.playLast=播放最后一个.mp3
+minetunes.guidev.playPause=播放/暂停
+minetunes.guidev.volumeControl=控制音量[+ / -(shift)]
+minetunes.guidev.generatePlaylist=生成播放列表
