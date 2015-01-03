@@ -14,10 +14,13 @@ public final class CacheHelper {
 
 	public static File getCacheFile(String filename) throws IOException {
 		File loc = new File(".");
-		File cacheFile = new File(loc,  LibMisc.MOD_ID + "/" + filename);
+		File cacheFile = new File(loc, LibMisc.MOD_ID + "/" + filename);
 
-		if(!cacheFile.exists())
+		if(!cacheFile.exists()) {
+			cacheFile.getParentFile().mkdirs();
 			cacheFile.createNewFile();
+		}
+			
 
 		return cacheFile;
 	}
