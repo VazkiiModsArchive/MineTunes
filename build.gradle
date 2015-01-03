@@ -89,8 +89,8 @@ task incrementBuildNumber(dependsOn: 'reobf') << {
         config.toProperties().store(it, "")
     }
 
-    file('web/versions.ini').append("\n${version}=${minecraft.version}")
-    file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
+    //file('web/versions.ini').append("\n${version}=${minecraft.version}")
+    //file("${config.dir_repo}/version/${minecraft.version}.txt").write("${version}")
 }
 
 // I have no idea what I'm doing
@@ -201,5 +201,5 @@ jar {
 }*/
 
 //change this so it only increments on upload
-upload.dependsOn tasks.incrementBuildNumber
-defaultTasks 'clean', 'build', 'sort'/*, 'forgecraft', 'curse', 'upload'*/ //remove clean if you want faster builds, this will stop rare inconsistancies. 
+//upload.dependsOn tasks.incrementBuildNumber
+defaultTasks 'clean', 'build', 'sort', 'incrementBuildNumber'/*, 'forgecraft', 'curse', 'upload'*/ //remove clean if you want faster builds, this will stop rare inconsistancies. 
