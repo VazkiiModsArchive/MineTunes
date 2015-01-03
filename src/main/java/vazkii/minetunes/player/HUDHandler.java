@@ -22,7 +22,7 @@ public final class HUDHandler {
 	
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
-		if(event.type == ElementType.ALL) {
+		if(event.type == ElementType.ALL && MTConfig.hudEnabled) {
 			Minecraft mc = Minecraft.getMinecraft();
 			int width = event.resolution.getScaledWidth();
 			int height = event.resolution.getScaledHeight();

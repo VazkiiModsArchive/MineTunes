@@ -1,13 +1,16 @@
 package vazkii.minetunes.player.chooser;
 
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,7 +33,15 @@ public class FileSelector extends JFrame {
 		this.action = action;
 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		fileChooser = new JFileChooser();
+		fileChooser = new JFileChooser() {
+			@Override
+			protected JDialog createDialog(Component parent) throws HeadlessException {
+				JDialog dialog = super.createDialog(parent);
+				dialog.setLocationByPlatform(true);
+				dialog.setAlwaysOnTop(true);
+				return dialog;
+			}
+		};
 		if(filter != null) {
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			fileChooser.addChoosableFileFilter(filter);

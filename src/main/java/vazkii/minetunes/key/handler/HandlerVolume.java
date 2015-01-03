@@ -36,7 +36,7 @@ public class HandlerVolume extends KeyHandler {
 
 	@Override
 	public void keyUp(KeyBinding key) {
-		if(!positive)
+		if(positive)
 			HUDHandler.showVolume = false;
 		down = false;
 	}
