@@ -1,6 +1,9 @@
 # Keybinds
 minetunes.key.category=MineTunes Keybinds
 minetunes.keys.menu=Main Menu
+minetunes.keys.playpause=Play/Pause
+minetunes.keys.plus=Volume-/Prev. Song
+minetunes.keys.minus=Volume+/Next Song
 
 # Gui Text
 minetunes.gui.title=mineTunes
@@ -24,6 +27,7 @@ minetunes.gui.shiftToActivate=Shift to Activate
 minetunes.gui.playlistCreator=Playlist Creator
 minetunes.gui.clickToSet=Left Click to set position
 minetunes.gui.escapeToReset=Press ESCAPE to reset position
+minetunes.gui.volume=Volume: %s
 
 # Player Text
 minetunes.player.chooser.filterPlaylist=Folder or Playlist (.m3u)

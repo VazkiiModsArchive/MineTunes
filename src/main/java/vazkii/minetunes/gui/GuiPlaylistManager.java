@@ -226,6 +226,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	public static void selectCurrentPlaylist(int playlist, int song) {
 		currentPlaylist = playlist;
 		currentSong = song;
+		if(MineTunes.musicPlayerThread != null)
+			MineTunes.musicPlayerThread.onPlaylistChange();
 	}
 	
 	public static int getCurrentPlaylistIndex() {

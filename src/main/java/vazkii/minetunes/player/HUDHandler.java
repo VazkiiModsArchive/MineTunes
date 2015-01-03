@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 
@@ -17,6 +18,8 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class HUDHandler {
 
+	public static boolean showVolume = false;
+	
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
 		Minecraft mc = Minecraft.getMinecraft();
@@ -36,14 +39,17 @@ public final class HUDHandler {
 			String time = MP3Metadata.getLengthStr((int) ((double) meta.lengthMs - (double) meta.lengthMs * MineTunes.musicPlayerThread.getFractionPlayed()));
 			String title = meta.title + " (" + time + ")";
 			String artist = meta.artist;
+			String volume = showVolume ? (String.format(StatCollector.translateToLocal("minetunes.gui.volume"), "+" + (int) (MineTunes.musicPlayerThread.getRelativeVolume() * 100) + "%")) : "";
 
 			int padding = 4;
 
 			int titleWidth = mc.fontRenderer.getStringWidth(title);
 			int artistWidth = mc.fontRenderer.getStringWidth(artist);
-			int textWidth = Math.max(titleWidth, artistWidth);
+			int volumeWidth = mc.fontRenderer.getStringWidth(volume);
+			
+			int textWidth = Math.max(titleWidth, Math.max(artistWidth, volumeWidth));
 			int hudWidth = textWidth + noteWidth + noteSpace + padding * 2;
-			int hudHeight = 20 + padding * 2;
+			int hudHeight = (showVolume ? 30 : 20) + padding * 2;
 
 			int x = coords.x;
 			int y = coords.y;
@@ -80,14 +86,18 @@ public final class HUDHandler {
 
 			int diffTitle = 0;
 			int diffArtist = 0;
+			int diffVolume = 0;
 
 			if(rightSide) {
 				diffTitle = textWidth - titleWidth;
 				diffArtist = textWidth - artistWidth;
+				diffVolume = textWidth - volumeWidth;
 			}
 
 			mc.fontRenderer.drawStringWithShadow(title, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffTitle, y + padding, 0xFFFFFF);
 			mc.fontRenderer.drawStringWithShadow(artist, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffArtist, y + 10 + padding, 0xDDDDDD);
+			if(showVolume)
+				mc.fontRenderer.drawStringWithShadow(volume, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffVolume, y + 20 + padding, 0xDDDDDD);
 		}
 	}
 

@@ -1,9 +1,8 @@
 package vazkii.minetunes.player;
 
-import java.io.File;
 import java.io.FileInputStream;
-
-import com.mpatric.mp3agic.Mp3File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.JavaSoundAudioDevice;
@@ -33,6 +32,8 @@ public class ThreadMusicPlayer extends Thread {
 	volatile boolean paused = false; 
 	volatile int pauseFrames = 0;
 
+	volatile List<MP3Metadata> lastSongs = new ArrayList();
+	
 	public ThreadMusicPlayer() {
 		setDaemon(true);
 		setName("mineTunes Player Thread");
@@ -81,14 +82,27 @@ public class ThreadMusicPlayer extends Thread {
 	}
 
 	public void next() {
+		next(true);
+	}
+	
+	public void next(boolean add) {
 		Playlist playlist = GuiPlaylistManager.getCurrentPlaylist();
 		MP3Metadata mp3 = playlist == null ? null : playlist.nextSong();
 		if(mp3 != null)
-			play(mp3);
+			play(mp3, add);
 		else {
 			playingMP3 = null;
 			resetPlayer();
 		}
+	}
+	
+	public void prev() {
+		if(lastSongs.size() < 2)
+			return;
+		
+		removeFromLastPlayed(lastSongs.get(lastSongs.size() - 1));
+		MP3Metadata meta = lastSongs.get(lastSongs.size() - 1);
+		play(meta, false);
 	}
 	
 	public void resetPlayer() {
@@ -102,12 +116,31 @@ public class ThreadMusicPlayer extends Thread {
 	}
 
 	public void play(MP3Metadata metadata) {
+		play(metadata, true);
+	}
+	
+	public void play(MP3Metadata metadata, boolean add) {
 		resetPlayer();
+		
+		if(add)
+			addToLastPlayed(metadata);
+		
 		playingMP3 = metadata;
 		paused = false;
 		queued = true;
 	}
+	
+	private void addToLastPlayed(MP3Metadata meta) {
+		lastSongs.add(meta);
+		
+		while(lastSongs.size() > 10)
+			lastSongs.remove(0);
+	}
 
+	private void removeFromLastPlayed(MP3Metadata meta) {
+		lastSongs.remove(meta);
+	}
+	
 	public void pauseOrPlay() {
 		if(player != null)
 			if(!paused) {
@@ -120,6 +153,10 @@ public class ThreadMusicPlayer extends Thread {
 				queued = true;
 				paused = false;
 			}
+	}
+	
+	public void onPlaylistChange() {
+		lastSongs.clear();
 	}
 	
 	public float getGain() {

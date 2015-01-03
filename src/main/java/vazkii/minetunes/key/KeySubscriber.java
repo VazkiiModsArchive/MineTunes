@@ -15,7 +15,7 @@ public class KeySubscriber {
 		if(event.phase == Phase.START && Minecraft.getMinecraft().thePlayer != null) {
 			for(KeyBinding key : KeyBindings.handlers.keySet()) {
 				KeyHandler handler = KeyBindings.handlers.get(key);
-				if(key.isPressed())
+				if(key.getIsKeyPressed())
 					handler.keyDown(key);
 				else handler.keyUp(key);
 			}
