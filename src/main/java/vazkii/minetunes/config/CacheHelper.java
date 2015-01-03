@@ -20,7 +20,6 @@ public final class CacheHelper {
 			cacheFile.getParentFile().mkdirs();
 			cacheFile.createNewFile();
 		}
-			
 
 		return cacheFile;
 	}

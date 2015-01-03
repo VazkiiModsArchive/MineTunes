@@ -22,82 +22,84 @@ public final class HUDHandler {
 	
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
-		Minecraft mc = Minecraft.getMinecraft();
-		int width = event.resolution.getScaledWidth();
-		int height = event.resolution.getScaledHeight();
-		Point coords = getCoords(width, height, MTConfig.hudRelativeTo, MTConfig.hudPosX, MTConfig.hudPosY);
+		if(event.type == ElementType.ALL) {
+			Minecraft mc = Minecraft.getMinecraft();
+			int width = event.resolution.getScaledWidth();
+			int height = event.resolution.getScaledHeight();
+			Point coords = getCoords(width, height, MTConfig.hudRelativeTo, MTConfig.hudPosX, MTConfig.hudPosY);
 
-		if(MineTunes.musicPlayerThread != null && MineTunes.musicPlayerThread.playingMP3 != null) {
-			MP3Metadata meta = MineTunes.musicPlayerThread.playingMP3;
+			if(MineTunes.musicPlayerThread != null && MineTunes.musicPlayerThread.playingMP3 != null) {
+				MP3Metadata meta = MineTunes.musicPlayerThread.playingMP3;
 
-			boolean rightSide = MTConfig.hudRelativeTo == 0 || MTConfig.hudRelativeTo == 3;
+				boolean rightSide = MTConfig.hudRelativeTo == 0 || MTConfig.hudRelativeTo == 3;
 
-			String note = MineTunes.musicPlayerThread.paused ? "\u258E\u258E" : "\u266C";
-			int noteWidth = mc.fontRenderer.getStringWidth(note) * 2;
-			int noteSpace = 4;
+				String note = MineTunes.musicPlayerThread.paused ? "\u258E\u258E" : "\u266C";
+				int noteWidth = mc.fontRenderer.getStringWidth(note) * 2;
+				int noteSpace = 4;
 
-			String time = MP3Metadata.getLengthStr((int) ((double) meta.lengthMs - (double) meta.lengthMs * MineTunes.musicPlayerThread.getFractionPlayed()));
-			String title = meta.title + " (" + time + ")";
-			String artist = meta.artist;
-			String volume = showVolume ? (String.format(StatCollector.translateToLocal("minetunes.gui.volume"), "+" + (int) (MineTunes.musicPlayerThread.getRelativeVolume() * 100) + "%")) : "";
+				String time = MP3Metadata.getLengthStr((int) ((double) meta.lengthMs - (double) meta.lengthMs * MineTunes.musicPlayerThread.getFractionPlayed()));
+				String title = meta.title + " (" + time + ")";
+				String artist = meta.artist;
+				String volume = showVolume ? (String.format(StatCollector.translateToLocal("minetunes.gui.volume"), "+" + (int) (MineTunes.musicPlayerThread.getRelativeVolume() * 100) + "%")) : "";
 
-			int padding = 4;
+				int padding = 4;
 
-			int titleWidth = mc.fontRenderer.getStringWidth(title);
-			int artistWidth = mc.fontRenderer.getStringWidth(artist);
-			int volumeWidth = mc.fontRenderer.getStringWidth(volume);
-			
-			int textWidth = Math.max(titleWidth, Math.max(artistWidth, volumeWidth));
-			int hudWidth = textWidth + noteWidth + noteSpace + padding * 2;
-			int hudHeight = (showVolume ? 30 : 20) + padding * 2;
+				int titleWidth = mc.fontRenderer.getStringWidth(title);
+				int artistWidth = mc.fontRenderer.getStringWidth(artist);
+				int volumeWidth = mc.fontRenderer.getStringWidth(volume);
+				
+				int textWidth = Math.max(titleWidth, Math.max(artistWidth, volumeWidth));
+				int hudWidth = textWidth + noteWidth + noteSpace + padding * 2;
+				int hudHeight = (showVolume ? 30 : 20) + padding * 2;
 
-			int x = coords.x;
-			int y = coords.y;
-			
-			if(rightSide)
-				x -= hudWidth;
+				int x = coords.x;
+				int y = coords.y;
+				
+				if(rightSide)
+					x -= hudWidth;
 
-			if(x < 0)
-				x = padding;
-			if(y < 0)
-				y = 0;
+				if(x < 0)
+					x = padding;
+				if(y < 0)
+					y = 0;
 
-			int xf = x + hudWidth;
-			int yf = y + hudHeight;
+				int xf = x + hudWidth;
+				int yf = y + hudHeight;
 
-			if(xf > width)
-				x -= (xf - width);
-			if(yf > height)
-				y -= (yf - height);
+				if(xf > width)
+					x -= (xf - width);
+				if(yf > height)
+					y -= (yf - height);
 
-			Color color = Color.getHSBColor((float) (System.currentTimeMillis() % 5000) / 5000F, 1F, 1F);
+				Color color = Color.getHSBColor((float) (System.currentTimeMillis() % 5000) / 5000F, 1F, 1F);
 
-			int noteX = x + padding + (rightSide ? textWidth + noteSpace : 0);
-			int noteY = y + padding;
+				int noteX = x + padding + (rightSide ? textWidth + noteSpace : 0);
+				int noteY = y + padding;
 
-			GL11.glPushMatrix();
-			GL11.glScalef(2F, 2F, 2F);
-			GL11.glTranslatef((float) noteX / 2, (float) noteY / 2, 0F);
-			GL11.glTranslatef(0.5F, 0.5F, 0F);
-			mc.fontRenderer.drawString(note, 0, 0, color.darker().darker().getRGB());
-			GL11.glTranslatef(-0.5F, -0.5F, 0F);
-			mc.fontRenderer.drawString(note, 0, 0, color.getRGB());
-			GL11.glPopMatrix();
+				GL11.glPushMatrix();
+				GL11.glScalef(2F, 2F, 2F);
+				GL11.glTranslatef((float) noteX / 2, (float) noteY / 2, 0F);
+				GL11.glTranslatef(0.5F, 0.5F, 0F);
+				mc.fontRenderer.drawString(note, 0, 0, color.darker().darker().getRGB());
+				GL11.glTranslatef(-0.5F, -0.5F, 0F);
+				mc.fontRenderer.drawString(note, 0, 0, color.getRGB());
+				GL11.glPopMatrix();
 
-			int diffTitle = 0;
-			int diffArtist = 0;
-			int diffVolume = 0;
+				int diffTitle = 0;
+				int diffArtist = 0;
+				int diffVolume = 0;
 
-			if(rightSide) {
-				diffTitle = textWidth - titleWidth;
-				diffArtist = textWidth - artistWidth;
-				diffVolume = textWidth - volumeWidth;
+				if(rightSide) {
+					diffTitle = textWidth - titleWidth;
+					diffArtist = textWidth - artistWidth;
+					diffVolume = textWidth - volumeWidth;
+				}
+
+				mc.fontRenderer.drawStringWithShadow(title, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffTitle, y + padding, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(artist, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffArtist, y + 10 + padding, 0xDDDDDD);
+				if(showVolume)
+					mc.fontRenderer.drawStringWithShadow(volume, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffVolume, y + 20 + padding, 0xDDDDDD);
 			}
-
-			mc.fontRenderer.drawStringWithShadow(title, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffTitle, y + padding, 0xFFFFFF);
-			mc.fontRenderer.drawStringWithShadow(artist, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffArtist, y + 10 + padding, 0xDDDDDD);
-			if(showVolume)
-				mc.fontRenderer.drawStringWithShadow(volume, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffVolume, y + 20 + padding, 0xDDDDDD);
 		}
 	}
 
