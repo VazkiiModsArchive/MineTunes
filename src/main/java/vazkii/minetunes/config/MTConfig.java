@@ -16,7 +16,7 @@ public final class MTConfig {
 	private static final String CONFIG_FILE = "config.dat";
 
 	private static final String TAG_PLAY_MODE = "playMode";
-	private static final String TAG_HUD_ENABLED = "hudPosY";
+	private static final String TAG_HUD_ENABLED = "hudEnabled";
 	private static final String TAG_HUD_RELATIVE_TO = "hudRelativeTo";
 	private static final String TAG_HUD_POS_X = "hudPosX";
 	private static final String TAG_HUD_POS_Y = "hudPosY";

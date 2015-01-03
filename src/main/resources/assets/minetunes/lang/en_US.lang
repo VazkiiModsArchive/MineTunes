@@ -22,6 +22,8 @@ minetunes.gui.delete=Delete
 minetunes.gui.reload=Reload
 minetunes.gui.shiftToActivate=Shift to Activate
 minetunes.gui.playlistCreator=Playlist Creator
+minetunes.gui.clickToSet=Left Click to set position
+minetunes.gui.escapeToReset=Press ESCAPE to reset position
 
 # Player Text
 minetunes.player.chooser.filterPlaylist=Folder or Playlist (.m3u)

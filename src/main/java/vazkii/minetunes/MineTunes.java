@@ -3,9 +3,11 @@ package vazkii.minetunes;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 
+import net.minecraftforge.common.MinecraftForge;
 import vazkii.minetunes.config.MTConfig;
 import vazkii.minetunes.key.KeyBindings;
 import vazkii.minetunes.lib.LibMisc;
+import vazkii.minetunes.player.HUDHandler;
 import vazkii.minetunes.player.ThreadMusicPlayer;
 import vazkii.minetunes.playlist.PlaylistList;
 import vazkii.minetunes.playlist.ThreadPlaylistCreator;
@@ -24,6 +26,8 @@ public class MineTunes {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		KeyBindings.init();
+		
+		MinecraftForge.EVENT_BUS.register(new HUDHandler());
 		
 		MTConfig.findCompoundAndLoad();
 		PlaylistList.findCompoundAndLoad();

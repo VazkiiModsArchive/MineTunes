@@ -163,7 +163,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 			configChanged = true;
 			break;
 		case 3:
-			// TODO
+			mc.displayGuiScreen(new GuiMoveHUD());
 			break;
 		case 4:
 			MTConfig.playMode = MTConfig.playMode == 3 ? 0 : MTConfig.playMode + 1;
