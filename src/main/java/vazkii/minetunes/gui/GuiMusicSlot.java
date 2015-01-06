@@ -79,7 +79,7 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 				if(!selected)
 					parent.drawBox(s - 6, k + 2, listWidth + 6, 32);
 				
-				font.drawStringWithShadow((playing ? EnumChatFormatting.BOLD : "") + metadata.title, s, k + 3, colorMain);
+				font.drawStringWithShadow(metadata.title, s, k + 3, colorMain);
 				font.drawStringWithShadow(metadata.artist, s + 4, k + 13, colorSub);
 				font.drawStringWithShadow(metadata.album, s + 4, k + 23, colorSub);
 				

@@ -94,7 +94,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		boolean hasName = !playlistNameField.getText().isEmpty();
 		boolean creatingPlaylist = MineTunes.playlistCreatorThread != null;
 		if(creatingPlaylist) {
-			String creating = EnumChatFormatting.BOLD + StatCollector.translateToLocal("minetunes.gui.creatingPlaylist");
+			String creating = EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("minetunes.gui.creatingPlaylist");
 			String status = MineTunes.playlistCreatorThread.getProgressState();
 			
 			fontRendererObj.drawStringWithShadow(creating, width - 10 - fontRendererObj.getStringWidth(creating), 30, 0xFFFFFF);
