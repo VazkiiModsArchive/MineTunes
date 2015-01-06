@@ -258,4 +258,8 @@ public class AdvancedPlayer
 	public int getFrames() {
 		return frames;
 	}
+	
+	public Decoder getDecoder() {
+		return decoder;
+	}
 }

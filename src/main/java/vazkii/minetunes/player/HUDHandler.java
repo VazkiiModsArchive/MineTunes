@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -20,6 +21,8 @@ public final class HUDHandler {
 
 	public static boolean showVolume = false;
 	
+	private float[] oldFFT = new float[SpectrumTools.BANDS];
+	
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
 		if(event.type == ElementType.ALL && MTConfig.hudEnabled) {
@@ -28,7 +31,7 @@ public final class HUDHandler {
 			int height = event.resolution.getScaledHeight();
 			Point coords = getCoords(width, height, MTConfig.hudRelativeTo, MTConfig.hudPosX, MTConfig.hudPosY);
 
-			if(MineTunes.musicPlayerThread != null && MineTunes.musicPlayerThread.playingMP3 != null) {
+			if(MineTunes.musicPlayerThread != null && MineTunes.musicPlayerThread.player != null && MineTunes.musicPlayerThread.playingMP3 != null) {
 				MP3Metadata meta = MineTunes.musicPlayerThread.playingMP3;
 
 				boolean rightSide = MTConfig.hudRelativeTo == 0 || MTConfig.hudRelativeTo == 3;
@@ -75,6 +78,7 @@ public final class HUDHandler {
 
 				int noteX = x + padding + (rightSide ? textWidth + noteSpace : 0);
 				int noteY = y + padding;
+				int noteColor = color.getRGB();
 
 				GL11.glPushMatrix();
 				GL11.glScalef(2F, 2F, 2F);
@@ -82,27 +86,82 @@ public final class HUDHandler {
 				GL11.glTranslatef(0.5F, 0.5F, 0F);
 				mc.fontRenderer.drawString(note, 0, 0, color.darker().darker().getRGB());
 				GL11.glTranslatef(-0.5F, -0.5F, 0F);
-				mc.fontRenderer.drawString(note, 0, 0, color.getRGB());
+				mc.fontRenderer.drawString(note, 0, 0, noteColor);
 				GL11.glPopMatrix();
 
 				int diffTitle = 0;
 				int diffArtist = 0;
 				int diffVolume = 0;
 
+				int textLeft = x + padding + (rightSide ? 0 : noteWidth + noteSpace);
+				int spectrumLeft = textLeft;
+				
 				if(rightSide) {
 					diffTitle = textWidth - titleWidth;
 					diffArtist = textWidth - artistWidth;
 					diffVolume = textWidth - volumeWidth;
 				}
 
-				mc.fontRenderer.drawStringWithShadow(title, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffTitle, y + padding, 0xFFFFFF);
-				mc.fontRenderer.drawStringWithShadow(artist, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffArtist, y + 10 + padding, 0xDDDDDD);
+				int spaceWidth = SpectrumTools.BANDS - 1;
+				int minWidth = 2 * SpectrumTools.BANDS + spaceWidth;
+				int analyzerWidth = Math.max(minWidth, textWidth * 2 - spaceWidth);
+				renderSpectrumAnalyzer(mc, textLeft, y + padding + 20, analyzerWidth, 150, noteColor);
+				
+				mc.fontRenderer.drawStringWithShadow(title, textLeft + diffTitle, y + padding, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(artist, textLeft + diffArtist, y + 10 + padding, 0xDDDDDD);
 				if(showVolume)
-					mc.fontRenderer.drawStringWithShadow(volume, x + padding + (rightSide ? 0 : noteWidth + noteSpace) + diffVolume, y + 20 + padding, 0xDDDDDD);
+					mc.fontRenderer.drawStringWithShadow(volume, textLeft + diffVolume, y + 20 + padding, 0xDDDDDD);
+				
 			}
 		}
 	}
 
+	// Adapted from kjdsp
+	// https://code.google.com/p/libkj-java/
+	private void renderSpectrumAnalyzer(Minecraft mc, int x, int y, int width, int height, int color) {
+    	float[] wFFT = SpectrumTools.getFFTCalculation();
+    	if(wFFT == null)
+    		return;
+    	
+    	int bandWidth = (int) ((float) width / (float) SpectrumTools.FFT_SAMPLE_SIZE);
+    	float multiplier = (SpectrumTools.FFT_SAMPLE_SIZE / 2) / SpectrumTools.BANDS;
+		
+    	int lightColor = 0xFF << 24 | color;
+    	int darkColor = new Color(lightColor).darker().getRGB();
+    	
+    	for(int i = 0; i < SpectrumTools.BANDS; i++) {
+    		float wFs = 0;
+    		// -- Average out nearest bands.
+    		for(int j = 0; j < multiplier; j++)
+    			wFs += wFFT[i + j];
+    		
+    		// -- Log filter.
+    		wFs = (wFs * (float) Math.log(i + 2));  
+    		
+    		if(wFs > 1.0f) 
+    			wFs = 1.0f; 
+    		
+    		// -- Compute SA decay...
+    		if(wFs >= (oldFFT[i] - SpectrumTools.DECAY))
+    			oldFFT[i] = wFs;
+    		else {
+    			oldFFT[i] -= SpectrumTools.DECAY;
+    			
+    			if(oldFFT[i] < 0)
+    				oldFFT[i] = 0;
+    			
+    			wFs = oldFFT[i];
+    		}
+    		
+    		int bHeight = (int) ((float) height * wFs) + 1;
+    		
+    		
+    		Gui.drawRect(x + i, y - bHeight, x + bandWidth + i, y, i % 2 == 0 ? lightColor : darkColor);
+    		
+    		x += bandWidth;
+    	}
+	}
+	
 	private static boolean shouldRenderHUD() {
 		Minecraft mc = Minecraft.getMinecraft();
 		if(mc.currentScreen != null && mc.currentScreen instanceof GuiMoveHUD)

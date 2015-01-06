@@ -353,5 +353,22 @@ public class Decoder implements DecoderErrors
 		}
 				
 	};
+	
+	
+	/* ====================================================================================
+	 * XXX
+	 * Functions added by necessity, not present in the original code.
+	 * ~Vazkii
+	 * ====================================================================================
+	 */
+	
+	public float[] getSamples(int channel) {
+		SynthesisFilter filter = filter1;
+		if(filter2 == null && channel == 1)
+			filter = filter2;
+
+		return filter == null ? null : filter.getSamples();
+	}
+	
 }
 

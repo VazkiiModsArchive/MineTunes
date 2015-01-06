@@ -1558,8 +1558,8 @@ private void compute_pcm_samples(Obuffer buffer)
 	
 	// MDM: this may not be necessary. The Layer III decoder always
 	// outputs 32 subband samples, but I haven't checked layer I & II.
-	for (int p=0;p<32;p++) 
-		samples[p] = 0.0f;
+	//for (int p=0;p<32;p++) 
+		//samples[p] = 0.0f;
   }
   
   
@@ -1813,5 +1813,16 @@ private void compute_pcm_samples(Obuffer buffer)
 	0.007919312f, -0.003326416f,  0.000473022f,  0.000015259f
 	};
   */
+	
+	/* ====================================================================================
+	 * XXX
+	 * Functions added by necessity, not present in the original code.
+	 * ~Vazkii
+	 * ====================================================================================
+	 */
+	
+	public float[] getSamples() {
+		return samples;
+	}
   
 }
