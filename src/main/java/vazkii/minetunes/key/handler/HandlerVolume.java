@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.settings.KeyBinding;
 import vazkii.minetunes.MineTunes;
 import vazkii.minetunes.key.KeyHandler;
+import vazkii.minetunes.key.KeySubscriber;
 import vazkii.minetunes.player.HUDHandler;
 
 public class HandlerVolume extends KeyHandler {
@@ -26,7 +27,7 @@ public class HandlerVolume extends KeyHandler {
 					else MineTunes.musicPlayerThread.next();
 				}
 			} else {
-				float gainVal = 0.5F;
+				float gainVal = 0.5F * KeySubscriber.delta;
 				MineTunes.musicPlayerThread.addGain(positive ? -gainVal : gainVal);
 				HUDHandler.showVolume = true;
 			}
@@ -36,8 +37,6 @@ public class HandlerVolume extends KeyHandler {
 
 	@Override
 	public void keyUp(KeyBinding key) {
-		if(positive)
-			HUDHandler.showVolume = false;
 		down = false;
 	}
 
