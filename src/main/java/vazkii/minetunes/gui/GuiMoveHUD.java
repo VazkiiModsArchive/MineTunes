@@ -4,6 +4,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import vazkii.minetunes.config.MTConfig;
 
+import java.io.IOException;
+
 // Stolen from ReCubed
 // FOR SHAME!
 // Oh wait I made that mod
@@ -51,10 +53,10 @@ public class GuiMoveHUD extends GuiMineTunes {
 		}
 		}
 
-		fontRendererObj.drawStringWithShadow("W", 0, 0, 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("A", 0, height - 9, 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("S", width - 6, height - 9, 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("D", width - 6, 0, 0xFFFFFF);
+		fontRendererObj.func_175063_a("W", 0, 0, 0xFFFFFF);
+		fontRendererObj.func_175063_a("A", 0, height - 9, 0xFFFFFF);
+		fontRendererObj.func_175063_a("S", width - 6, height - 9, 0xFFFFFF);
+		fontRendererObj.func_175063_a("D", width - 6, 0, 0xFFFFFF);
 
 		MTConfig.hudPosX = mx;
 		MTConfig.hudPosY = my;
@@ -62,7 +64,7 @@ public class GuiMoveHUD extends GuiMineTunes {
 	}
 
 	@Override
-	protected void mouseClicked(int par1, int par2, int par3) {
+	protected void mouseClicked(int par1, int par2, int par3) throws IOException {
 		if(par3 == 0)
 			saveAndExit();
 

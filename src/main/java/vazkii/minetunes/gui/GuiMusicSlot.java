@@ -5,13 +5,10 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.EnumChatFormatting;
-import scala.collection.parallel.ParIterableLike.Min;
 import vazkii.minetunes.MineTunes;
 import vazkii.minetunes.player.chooser.action.ActionPlayMp3;
 import vazkii.minetunes.playlist.MP3Metadata;
 import vazkii.minetunes.playlist.Playlist;
-import vazkii.minetunes.playlist.PlaylistList;
 
 public class GuiMusicSlot extends GuiScrollingListMT {
 
@@ -54,7 +51,7 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 		if(playlist != null) {
 			MP3Metadata metadata = playlist.metadataList.get(i);
 			if(metadata != null) {
-				FontRenderer font = Minecraft.getMinecraft().fontRenderer;
+				FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
 				boolean selected = isSelected(i);
 				
 				int s = j + 20 - listWidth;
@@ -79,9 +76,9 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 				if(!selected)
 					parent.drawBox(s - 6, k + 2, listWidth + 6, 32);
 				
-				font.drawStringWithShadow(metadata.title, s, k + 3, colorMain);
-				font.drawStringWithShadow(metadata.artist, s + 4, k + 13, colorSub);
-				font.drawStringWithShadow(metadata.album, s + 4, k + 23, colorSub);
+				font.func_175063_a(metadata.title, s, k + 3, colorMain);
+				font.func_175063_a(metadata.artist, s + 4, k + 13, colorSub);
+				font.func_175063_a(metadata.album, s + 4, k + 23, colorSub);
 				
 				GL11.glScalef(2F, 2F, 2F);
 				String length = metadata.length;

@@ -47,10 +47,10 @@ public class GuiDevTools extends GuiMineTunes {
 		drawBox(-4, -4, 224, boxHeight);
 		
 		for(int i = 0; i < debugOut.size(); i++)
-			fontRendererObj.drawStringWithShadow(debugOut.get(debugOut.size() - i - 1), 240, (i + 1) * 10, 0xFFFFFF);
+			fontRendererObj.func_175063_a(debugOut.get(debugOut.size() - i - 1), 240, (i + 1) * 10, 0xFFFFFF);
 		
-		fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("minetunes.guidev.warning1"), 10, 5, 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow(StatCollector.translateToLocal("minetunes.guidev.warning2"), 10, 15, 0xFFFFFF);
+		fontRendererObj.func_175063_a(StatCollector.translateToLocal("minetunes.guidev.warning1"), 10, 5, 0xFFFFFF);
+		fontRendererObj.func_175063_a(StatCollector.translateToLocal("minetunes.guidev.warning2"), 10, 15, 0xFFFFFF);
 		
 		super.drawScreen(mx, my, partialTicks);
 	}
