@@ -11,9 +11,9 @@ import vazkii.minetunes.player.HUDHandler;
 import vazkii.minetunes.player.ThreadMusicPlayer;
 import vazkii.minetunes.playlist.PlaylistList;
 import vazkii.minetunes.playlist.ThreadPlaylistCreator;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 @Mod(modid = LibMisc.MOD_ID, name = LibMisc.MOD_NAME, version = LibMisc.VERSION)
 public class MineTunes {

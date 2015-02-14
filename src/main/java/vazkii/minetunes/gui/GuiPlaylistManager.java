@@ -1,6 +1,7 @@
 package vazkii.minetunes.gui;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
@@ -57,7 +58,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		buttonList.add(deletePlaylistButton = new GuiButton(6, 10, height - 25, 88, 20, StatCollector.translateToLocal("minetunes.gui.delete")));
 		buttonList.add(reloadPlaylistButton = new GuiButton(7, 101, height - 25, 88, 20, StatCollector.translateToLocal("minetunes.gui.reload")));
 		
-		playlistNameField = new GuiTextField(fontRendererObj, width - 150, 30, 125, 20);
+		playlistNameField = new GuiTextField(0, fontRendererObj, width - 150, 30, 125, 20);
 		playlistNameField.setFocused(true);
 		playlistNameField.setCanLoseFocus(false);
 		playlistNameField.setMaxStringLength(32);
@@ -76,19 +77,19 @@ public class GuiPlaylistManager extends GuiMineTunes {
 
 		if(PlaylistList.playlistNames.isEmpty()) {
 			String s = StatCollector.translateToLocal("minetunes.gui.noPlaylists");
-			int sWidth = mc.fontRenderer.getStringWidth(s);
+			int sWidth = mc.fontRendererObj.getStringWidth(s);
 			int xp = 100 - sWidth / 2;
 			int yp = height / 2 - 5;
 			drawBox(xp - 10, yp - 10, sWidth + 20, 30);
-			mc.fontRenderer.drawStringWithShadow(s, xp, yp, 0xFF4444);
+			mc.fontRendererObj.func_175063_a(s, xp, yp, 0xFF4444);
 		}
 		
 		GL11.glPushMatrix();
 		GL11.glScalef(3F, 3F, 3F);
-		boolean unicode = mc.fontRenderer.getUnicodeFlag();
-		mc.fontRenderer.setUnicodeFlag(true);
-		mc.fontRenderer.drawString(StatCollector.translateToLocal("minetunes.gui.title"), 2, 1, 0xFFFFFF);
-		mc.fontRenderer.setUnicodeFlag(unicode);
+		boolean unicode = mc.fontRendererObj.getUnicodeFlag();
+		mc.fontRendererObj.setUnicodeFlag(true);
+		mc.fontRendererObj.drawString(StatCollector.translateToLocal("minetunes.gui.title"), 2, 1, 0xFFFFFF);
+		mc.fontRendererObj.setUnicodeFlag(unicode);
 		GL11.glPopMatrix();
 
 		boolean hasName = !playlistNameField.getText().isEmpty();
@@ -97,11 +98,11 @@ public class GuiPlaylistManager extends GuiMineTunes {
 			String creating = EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("minetunes.gui.creatingPlaylist");
 			String status = MineTunes.playlistCreatorThread.getProgressState();
 			
-			fontRendererObj.drawStringWithShadow(creating, width - 10 - fontRendererObj.getStringWidth(creating), 30, 0xFFFFFF);
-			fontRendererObj.drawStringWithShadow(status, width - 10 - fontRendererObj.getStringWidth(status), 42, 0xFFFFFF);
+			fontRendererObj.func_175063_a(creating, width - 10 - fontRendererObj.getStringWidth(creating), 30, 0xFFFFFF);
+			fontRendererObj.func_175063_a(status, width - 10 - fontRendererObj.getStringWidth(status), 42, 0xFFFFFF);
 		} else {
-			mc.fontRenderer.drawString(StatCollector.translateToLocal("minetunes.gui.options"), 126, 20, 0xFFFFFF);
-			mc.fontRenderer.drawString(StatCollector.translateToLocal("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);
+			mc.fontRendererObj.drawString(StatCollector.translateToLocal("minetunes.gui.options"), 126, 20, 0xFFFFFF);
+			mc.fontRendererObj.drawString(StatCollector.translateToLocal("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);
 			
 			if(!hasName) {
 				String name = StatCollector.translateToLocal("minetunes.gui.playlistName");
@@ -123,7 +124,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		if(hasPlaylist) {
 			drawBox(8, height - 40, 184, 42);
 			String s = StatCollector.translateToLocal("minetunes.gui.shiftToActivate");
-			int sWidth = mc.fontRenderer.getStringWidth(s);
+			int sWidth = mc.fontRendererObj.getStringWidth(s);
 			drawCenteredString(fontRendererObj, s, 100, height - 36, isShiftKeyDown() ? 0xFFFFFF : 0x666666);
 		}
 		
@@ -131,14 +132,14 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	}
 	
 	@Override
-	protected void keyTyped(char c, int i) {
+	protected void keyTyped(char c, int i) throws IOException {
 		if(MineTunes.playlistCreatorThread == null)
 			playlistNameField.textboxKeyTyped(c, i);
 		super.keyTyped(c, i);
 	}
 	
 	@Override
-	protected void mouseClicked(int b, int x, int y) {
+	protected void mouseClicked(int b, int x, int y) throws IOException {
 		if(MineTunes.playlistCreatorThread == null)
 			playlistNameField.mouseClicked(b, x, y);
 		super.mouseClicked(b, x, y);
