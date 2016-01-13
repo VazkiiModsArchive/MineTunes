@@ -81,7 +81,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 			int xp = 100 - sWidth / 2;
 			int yp = height / 2 - 5;
 			drawBox(xp - 10, yp - 10, sWidth + 20, 30);
-			mc.fontRendererObj.func_175063_a(s, xp, yp, 0xFF4444);
+			mc.fontRendererObj.drawStringWithShadow(s, xp, yp, 0xFF4444);
 		}
 		
 		GL11.glPushMatrix();
@@ -98,8 +98,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
 			String creating = EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("minetunes.gui.creatingPlaylist");
 			String status = MineTunes.playlistCreatorThread.getProgressState();
 			
-			fontRendererObj.func_175063_a(creating, width - 10 - fontRendererObj.getStringWidth(creating), 30, 0xFFFFFF);
-			fontRendererObj.func_175063_a(status, width - 10 - fontRendererObj.getStringWidth(status), 42, 0xFFFFFF);
+			fontRendererObj.drawStringWithShadow(creating, width - 10 - fontRendererObj.getStringWidth(creating), 30, 0xFFFFFF);
+			fontRendererObj.drawStringWithShadow(status, width - 10 - fontRendererObj.getStringWidth(status), 42, 0xFFFFFF);
 		} else {
 			mc.fontRendererObj.drawString(StatCollector.translateToLocal("minetunes.gui.options"), 126, 20, 0xFFFFFF);
 			mc.fontRendererObj.drawString(StatCollector.translateToLocal("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);

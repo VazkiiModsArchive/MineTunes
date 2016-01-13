@@ -107,10 +107,10 @@ public final class HUDHandler {
 				int analyzerWidth = Math.max(minWidth, textWidth * 2 - spaceWidth);
 				renderSpectrumAnalyzer(mc, textLeft, y + padding + 20, analyzerWidth, 150, noteColor);
 				
-				mc.fontRendererObj.func_175063_a(title, textLeft + diffTitle, y + padding, 0xFFFFFF);
-				mc.fontRendererObj.func_175063_a(artist, textLeft + diffArtist, y + 10 + padding, 0xDDDDDD);
+				mc.fontRendererObj.drawStringWithShadow(title, textLeft + diffTitle, y + padding, 0xFFFFFF);
+				mc.fontRendererObj.drawStringWithShadow(artist, textLeft + diffArtist, y + 10 + padding, 0xDDDDDD);
 				if(showVolume)
-					mc.fontRendererObj.func_175063_a(volume, textLeft + diffVolume, y + 20 + padding, 0xDDDDDD);
+					mc.fontRendererObj.drawStringWithShadow(volume, textLeft + diffVolume, y + 20 + padding, 0xDDDDDD);
 				
 			}
 		}

@@ -53,10 +53,10 @@ public class GuiMoveHUD extends GuiMineTunes {
 		}
 		}
 
-		fontRendererObj.func_175063_a("W", 0, 0, 0xFFFFFF);
-		fontRendererObj.func_175063_a("A", 0, height - 9, 0xFFFFFF);
-		fontRendererObj.func_175063_a("S", width - 6, height - 9, 0xFFFFFF);
-		fontRendererObj.func_175063_a("D", width - 6, 0, 0xFFFFFF);
+		fontRendererObj.drawStringWithShadow("W", 0, 0, 0xFFFFFF);
+		fontRendererObj.drawStringWithShadow("A", 0, height - 9, 0xFFFFFF);
+		fontRendererObj.drawStringWithShadow("S", width - 6, height - 9, 0xFFFFFF);
+		fontRendererObj.drawStringWithShadow("D", width - 6, 0, 0xFFFFFF);
 
 		MTConfig.hudPosX = mx;
 		MTConfig.hudPosY = my;

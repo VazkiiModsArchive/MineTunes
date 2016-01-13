@@ -26,7 +26,7 @@ public class KeySubscriber {
 			if(event.phase == Phase.START) {
 				for(KeyBinding key : KeyBindings.handlers.keySet()) {
 					KeyHandler handler = KeyBindings.handlers.get(key);
-					if(key.getIsKeyPressed())
+					if(key.isKeyDown())
 						handler.keyDown(key);
 					else handler.keyUp(key);
 				}

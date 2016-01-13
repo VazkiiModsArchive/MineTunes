@@ -36,7 +36,7 @@ public class GuiPlaylistSlot extends GuiScrollingListMT {
 		Playlist playlist = PlaylistList.playlists.get(name);
 
 		FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
-		font.func_175063_a(name, j + 20 - listWidth, k + 3, 0xFFFFFF);
-		font.func_175063_a(playlist.metadataList.size() + " Songs", j + 25 - listWidth, k + 15, 0xDDDDDD);
+		font.drawStringWithShadow(name, j + 20 - listWidth, k + 3, 0xFFFFFF);
+		font.drawStringWithShadow(playlist.metadataList.size() + " Songs", j + 25 - listWidth, k + 15, 0xDDDDDD);
 	}
 }
