@@ -7,7 +7,7 @@ minetunes.keys.minus=Volume+/Next Song
 
 # Gui Text
 minetunes.gui.title=mineTunes
-minetunes.gui.options=Options
+minetunes.gui.search=Search
 minetunes.gui.exit=Exit
 minetunes.gui.devTools=Dev Tools
 minetunes.gui.showHud_true=Show HUD: Yes

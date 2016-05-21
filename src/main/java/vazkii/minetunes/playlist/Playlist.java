@@ -48,7 +48,7 @@ public class Playlist {
 		Set<MP3Metadata> metadataSet = new TreeSet();
 		for(int i = 0; i < count; i++) {
 			NBTTagCompound cmp1 = cmp.getCompoundTag(TAG_SONG_PREFIX + i);
-			metadataSet.add(new MP3Metadata(cmp1));
+			metadataSet.add(new MP3Metadata(i, cmp1));
 		}
 		
 		Playlist playlist = new Playlist(new File(filePath), metadataSet);

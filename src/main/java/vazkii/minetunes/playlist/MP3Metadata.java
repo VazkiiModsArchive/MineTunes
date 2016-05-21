@@ -23,6 +23,8 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 	
 	private static final String TAG_FILE_PATH = "filepath";
 
+	public final int index;
+	
 	public final File file;
 	
 	public final String artist;
@@ -35,7 +37,8 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 	public final long lengthMs;
 	public final int frameCount;
 	
-	public MP3Metadata(File file, Mp3File mp3) {
+	public MP3Metadata(int index, File file, Mp3File mp3) {
+		this.index = index;
 		this.file = file;
 		filename = file.getName();
 		
@@ -66,11 +69,12 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 		frameCount = mp3.getFrameCount();
 	}
 
-	public MP3Metadata(File file) throws UnsupportedTagException, InvalidDataException, IOException {
-		this(file, new Mp3File(file));
+	public MP3Metadata(int index, File file) throws UnsupportedTagException, InvalidDataException, IOException {
+		this(index, file, new Mp3File(file));
 	}
 	
-	public MP3Metadata(NBTTagCompound cmp) {
+	public MP3Metadata(int index, NBTTagCompound cmp) {
+		this.index = index;
 		artist = cmp.getString(TAG_ARTIST);
 		title = cmp.getString(TAG_TITLE);
 		album = cmp.getString(TAG_ALBUM);

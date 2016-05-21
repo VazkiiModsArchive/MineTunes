@@ -31,7 +31,7 @@ public class ActionPlayMp3 implements ISelectorAction {
 	
 	public void play(File file) {
 		try {
-			play(new MP3Metadata(file));
+			play(new MP3Metadata(0, file));
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

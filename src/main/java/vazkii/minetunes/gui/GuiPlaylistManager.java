@@ -2,6 +2,8 @@ package vazkii.minetunes.gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFileChooser;
 
@@ -10,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.text.TextFormatting;
 import vazkii.minetunes.MineTunes;
@@ -17,6 +20,7 @@ import vazkii.minetunes.config.MTConfig;
 import vazkii.minetunes.player.chooser.FileSelector;
 import vazkii.minetunes.player.chooser.action.ActionMakePlaylist;
 import vazkii.minetunes.player.chooser.filter.PlaylistFilter;
+import vazkii.minetunes.playlist.MP3Metadata;
 import vazkii.minetunes.playlist.Playlist;
 import vazkii.minetunes.playlist.PlaylistList;
 
@@ -26,7 +30,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	public volatile static int currentSong = 0;
 
 	static int selectedPlaylist = 0;
-	static int selectedSong = 0;
+	static MP3Metadata selectedSong = null;
 
 	GuiPlaylistSlot playlistSlot;
 	GuiMusicSlot musicSlot;
@@ -41,6 +45,9 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	GuiButton reloadPlaylistButton;
 
 	GuiTextField playlistNameField;
+	GuiTextField searchField;
+
+	public List<MP3Metadata> visibleSongs = new ArrayList();
 
 	@Override
 	public void initGui() {
@@ -49,9 +56,9 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		buttonList.add(new GuiButton(0, 5, 55, 100, 20, I18n.format("minetunes.gui.exit")));
 		buttonList.add(devOptionsButton = new GuiButton(1, 5, 30, 100, 20, I18n.format("minetunes.gui.devTools")));
 
-		buttonList.add(showHudButton = new GuiButton(2, 125, 30, 90, 20, I18n.format("minetunes.gui.showHud_true")));
-		buttonList.add(moveHudButton = new GuiButton(3, 225, 30, 50, 20, I18n.format("minetunes.gui.move")));
-		buttonList.add(playModeButton = new GuiButton(4, 125, 55, 150, 20, I18n.format("minetunes.gui.playMode0")));
+		buttonList.add(showHudButton = new GuiButton(2, 125, 5, 90, 20, I18n.format("minetunes.gui.showHud_true")));
+		buttonList.add(moveHudButton = new GuiButton(3, 225, 5, 70, 20, I18n.format("minetunes.gui.move")));
+		buttonList.add(playModeButton = new GuiButton(4, 125, 30, 170, 20, I18n.format("minetunes.gui.playMode0")));
 
 		buttonList.add(selectPlaylistButton = new GuiButton(5, width - 150, 55, 125, 20, I18n.format("minetunes.gui.selectPlaylist")));
 
@@ -59,12 +66,15 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		buttonList.add(reloadPlaylistButton = new GuiButton(7, 101, height - 25, 88, 20, I18n.format("minetunes.gui.reload")));
 
 		playlistNameField = new GuiTextField(0, fontRendererObj, width - 150, 30, 125, 20);
-		playlistNameField.setFocused(true);
-		playlistNameField.setCanLoseFocus(false);
 		playlistNameField.setMaxStringLength(32);
-
+		
+		searchField = new GuiTextField(0, fontRendererObj, 125, 55, 170, 20);
+		searchField.setFocused(true);
+		
 		playlistSlot = new GuiPlaylistSlot(this);
 		musicSlot = new GuiMusicSlot(this);
+		
+		updateVisibleSongs();
 	}
 
 	@Override
@@ -101,7 +111,6 @@ public class GuiPlaylistManager extends GuiMineTunes {
 			fontRendererObj.drawStringWithShadow(creating, width - 10 - fontRendererObj.getStringWidth(creating), 30, 0xFFFFFF);
 			fontRendererObj.drawStringWithShadow(status, width - 10 - fontRendererObj.getStringWidth(status), 42, 0xFFFFFF);
 		} else {
-			mc.fontRendererObj.drawString(I18n.format("minetunes.gui.options"), 126, 20, 0xFFFFFF);
 			mc.fontRendererObj.drawString(I18n.format("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);
 
 			if(!hasName) {
@@ -118,6 +127,12 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		moveHudButton.enabled = MTConfig.hudEnabled;
 		playModeButton.displayString = I18n.format("minetunes.gui.playMode" + MTConfig.playMode);
 
+		searchField.drawTextBox();
+		if(searchField.getText().isEmpty()) {
+			String s = I18n.format("minetunes.gui.search");
+			mc.fontRendererObj.drawString(s, searchField.xPosition + searchField.width - mc.fontRendererObj.getStringWidth(s) - 5, searchField.yPosition + 6, 0xAAAAAA);
+		}
+		
 		boolean hasPlaylist = getSelectedPlaylist() != null;
 		deletePlaylistButton.visible = reloadPlaylistButton.visible = hasPlaylist;
 		deletePlaylistButton.enabled = reloadPlaylistButton.enabled = isShiftKeyDown();
@@ -135,6 +150,12 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	protected void keyTyped(char c, int i) throws IOException {
 		if(MineTunes.playlistCreatorThread == null)
 			playlistNameField.textboxKeyTyped(c, i);
+		
+		String searchKey = searchField.getText();
+		searchField.textboxKeyTyped(c, i);
+		if(!searchField.getText().equals(searchKey))
+			updateVisibleSongs();
+		
 		super.keyTyped(c, i);
 	}
 
@@ -142,6 +163,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	protected void mouseClicked(int b, int x, int y) throws IOException {
 		if(MineTunes.playlistCreatorThread == null)
 			playlistNameField.mouseClicked(b, x, y);
+		searchField.mouseClicked(b, x, y);
 		super.mouseClicked(b, x, y);
 	}
 	@Override
@@ -153,6 +175,17 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		if(musicSlot != null)
 			musicSlot.handleMouseInput(mouseX, mouseY);
 		playlistSlot.handleMouseInput(mouseX, mouseY);
+	}
+	
+	public void updateVisibleSongs() {
+		visibleSongs.clear();
+		Playlist playlist = getSelectedPlaylist();
+		String searchKey = searchField.getText().toLowerCase();
+		
+		if(playlist != null)
+			for(MP3Metadata meta : playlist.metadataList)
+				if(meta.title.toLowerCase().contains(searchKey) || meta.artist.toLowerCase().contains(searchKey) || meta.album.toLowerCase().contains(searchKey))
+					visibleSongs.add(meta);
 	}
 
 	@Override
@@ -214,19 +247,20 @@ public class GuiPlaylistManager extends GuiMineTunes {
 
 	public void selectPlaylist(int playlist) {
 		selectedPlaylist = playlist;
-		selectedSong = 0;
+		selectedSong = null;
 		musicSlot.resetScroll();
+		updateVisibleSongs();
 	}
 
 	public int getSelectedPlaylistIndex() {
 		return selectedPlaylist;
 	}
 
-	public void selectSong(int song) {
+	public void selectSong(MP3Metadata song) {
 		selectedSong = song;
 	}
 
-	public int getSelectedSong() {
+	public MP3Metadata getSelectedSong() {
 		return selectedSong;
 	}
 

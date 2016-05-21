@@ -53,7 +53,7 @@ public class ProviderM3U extends PlaylistProvider {
 			if(mp3.exists()) {
 				try {
 					name = line;
-					metadataSet.add(new MP3Metadata(mp3));
+					metadataSet.add(new MP3Metadata(processedFiles, mp3));
 					processedFiles++;
 					updateState();
 				} catch (Exception e) {

@@ -49,7 +49,7 @@ public class ProviderDirectory extends PlaylistProvider {
 					foundFiles++;
 				else try {
 					name = file.getName();
-					metadataSet.add(new MP3Metadata(file));
+					metadataSet.add(new MP3Metadata(processedFiles, file));
 					processedFiles++;
 				} catch(Exception e) {
 					e.printStackTrace();
