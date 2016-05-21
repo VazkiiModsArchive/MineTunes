@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
@@ -34,7 +35,8 @@ public final class HUDHandler {
 				MP3Metadata meta = MineTunes.musicPlayerThread.playingMP3;
 
 				boolean rightSide = MTConfig.hudRelativeTo == 0 || MTConfig.hudRelativeTo == 3;
-
+				boolean topSide = MTConfig.hudRelativeTo == 0 || MTConfig.hudRelativeTo == 1;
+				
 				String note = MineTunes.musicPlayerThread.paused ? "\u258E\u258E" : "\u266C";
 				int noteWidth = mc.fontRendererObj.getStringWidth(note) * 2;
 				int noteSpace = 4;
@@ -95,16 +97,19 @@ public final class HUDHandler {
 				int textLeft = x + padding + (rightSide ? 0 : noteWidth + noteSpace);
 				int spectrumLeft = textLeft;
 				
+				int spaceWidth = SpectrumTools.BANDS - 1;
+				int minWidth = 2 * SpectrumTools.BANDS + spaceWidth;
+				int maxWidth = 16 * SpectrumTools.BANDS;
+				int spectrumWidth = Math.min(maxWidth, Math.max(minWidth, textWidth * 2 - spaceWidth));
+				
 				if(rightSide) {
 					diffTitle = textWidth - titleWidth;
 					diffArtist = textWidth - artistWidth;
 					diffVolume = textWidth - volumeWidth;
+					spectrumLeft += textWidth - spectrumWidth / 2;
 				}
 
-				int spaceWidth = SpectrumTools.BANDS - 1;
-				int minWidth = 2 * SpectrumTools.BANDS + spaceWidth;
-				int analyzerWidth = Math.max(minWidth, textWidth * 2 - spaceWidth);
-				renderSpectrumAnalyzer(mc, textLeft, y + padding + 20, analyzerWidth, 150, noteColor);
+				renderSpectrumAnalyzer(mc, spectrumLeft, y + padding + 20, spectrumWidth, 150, noteColor, topSide);
 				
 				mc.fontRendererObj.drawStringWithShadow(title, textLeft + diffTitle, y + padding, 0xFFFFFF);
 				mc.fontRendererObj.drawStringWithShadow(artist, textLeft + diffArtist, y + 10 + padding, 0xDDDDDD);
@@ -117,16 +122,18 @@ public final class HUDHandler {
 
 	// Adapted from kjdsp
 	// https://code.google.com/p/libkj-java/
-	private void renderSpectrumAnalyzer(Minecraft mc, int x, int y, int width, int height, int color) {
+	private void renderSpectrumAnalyzer(Minecraft mc, int x, int y, int width, int height, int color, boolean invert) {
     	float[] wFFT = SpectrumTools.getFFTCalculation();
     	if(wFFT == null)
     		return;
     	
+    	x += width / 2;
     	int bandWidth = (int) ((float) width / (float) SpectrumTools.FFT_SAMPLE_SIZE);
     	float multiplier = (SpectrumTools.FFT_SAMPLE_SIZE / 2) / SpectrumTools.BANDS;
 		
-    	int lightColor = 0xFF << 24 | color;
-    	int darkColor = new Color(lightColor).darker().getRGB();
+    	int alpha = 128;
+    	int lightColor = color + (alpha << 24);
+    	int darkColor = new Color(lightColor).darker().getRGB() + (alpha << 24);
     	
     	for(int i = 0; i < SpectrumTools.BANDS; i++) {
     		float wFs = 0;
@@ -138,7 +145,8 @@ public final class HUDHandler {
     		wFs = (wFs * (float) Math.log(i + 2));  
     		
     		if(wFs > 1.0f) 
-    			wFs = 1.0f; 
+    			wFs = 1.0f;
+    		wFs *= 6;
     		
     		// -- Compute SA decay...
     		if(wFs >= (oldFFT[i] - SpectrumTools.DECAY))
@@ -152,12 +160,16 @@ public final class HUDHandler {
     			wFs = oldFFT[i];
     		}
     		
-    		int bHeight = (int) ((float) height * wFs) + 1;
+    		int bHeight = Math.min(60, (int) ((float) height * wFs) + 1);
+    		GlStateManager.pushMatrix();
+    		GlStateManager.scale(0.5, 0.5, 0.5);
+    		if(invert)
+    			Gui.drawRect(x * 2, y * 2 - 40, x * 2 + bandWidth * 2, y * 2 - 40 + bHeight, i % 2 == 0 ? lightColor : darkColor);
+    		else Gui.drawRect(x * 2, y * 2 - bHeight, x * 2 + bandWidth * 2, y * 2, i % 2 == 0 ? lightColor : darkColor);
     		
+    		GlStateManager.popMatrix();
     		
-    		Gui.drawRect(x + i, y - bHeight, x + bandWidth + i, y, i % 2 == 0 ? lightColor : darkColor);
-    		
-    		x += bandWidth;
+    		x -= (bandWidth + 1);
     	}
 	}
 	

@@ -364,7 +364,7 @@ public class Decoder implements DecoderErrors
 	
 	public float[] getSamples(int channel) {
 		SynthesisFilter filter = filter1;
-		if(filter2 == null && channel == 1)
+		if(filter2 != null && channel == 1)
 			filter = filter2;
 
 		return filter == null ? null : filter.getSamples();
