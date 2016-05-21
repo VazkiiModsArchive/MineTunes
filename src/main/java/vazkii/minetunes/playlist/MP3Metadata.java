@@ -109,11 +109,11 @@ public class MP3Metadata implements Comparable<MP3Metadata> {
 	}
 	
 	public String getFullName() {
-		return artist + " - " + title;
+		return artist.trim() + " - " + title.trim();
 	}
 	
 	public String getSortingKey() {
-		return (title + artist + album).toLowerCase();
+		return (title.trim() + artist.trim() + album.trim()).toLowerCase();
 	}
 	
 	@Override
