@@ -2,8 +2,8 @@ package vazkii.minetunes.playlist.provider;
 
 import java.io.File;
 
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.TextFormatting;
 import vazkii.minetunes.playlist.Playlist;
 
 public abstract class PlaylistProvider {
@@ -27,15 +27,15 @@ public abstract class PlaylistProvider {
 		if(foundFiles > 0) {
 			if(processedFiles > 0) {
 				int percent = (int) (((float) processedFiles / (float) foundFiles) * 100);
-				EnumChatFormatting format = EnumChatFormatting.RED;
+				TextFormatting format = TextFormatting.RED;
 				if(percent > 50)
-					format = EnumChatFormatting.YELLOW;
+					format = TextFormatting.YELLOW;
 				if(percent > 90)
-					format = EnumChatFormatting.GREEN;
+					format = TextFormatting.GREEN;
 				
-				return String.format(StatCollector.translateToLocal("minetunes.playlist.generator.processing"), processedFiles, foundFiles) + format + " (" + percent + "%)";
-			} else return String.format(StatCollector.translateToLocal("minetunes.playlist.generator.scanning"), foundFiles);
- 		} else return StatCollector.translateToLocal("minetunes.playlist.generator.starting");
+				return I18n.format("minetunes.playlist.generator.processing", processedFiles, foundFiles) + format + " (" + percent + "%)";
+			} else return I18n.format("minetunes.playlist.generator.scanning", foundFiles);
+ 		} else return I18n.format("minetunes.playlist.generator.starting");
 	}
 	
 }

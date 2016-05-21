@@ -5,13 +5,12 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
-
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.TextFormatting;
 import vazkii.minetunes.MineTunes;
 import vazkii.minetunes.config.MTConfig;
 import vazkii.minetunes.player.chooser.FileSelector;
@@ -46,17 +45,17 @@ public class GuiPlaylistManager extends GuiMineTunes {
 	public void initGui() {
 		buttonList.clear();
 		
-		buttonList.add(new GuiButton(0, 5, 55, 100, 20, StatCollector.translateToLocal("minetunes.gui.exit")));
-		buttonList.add(devOptionsButton = new GuiButton(1, 5, 30, 100, 20, StatCollector.translateToLocal("minetunes.gui.devTools")));
+		buttonList.add(new GuiButton(0, 5, 55, 100, 20, I18n.format("minetunes.gui.exit")));
+		buttonList.add(devOptionsButton = new GuiButton(1, 5, 30, 100, 20, I18n.format("minetunes.gui.devTools")));
 
-		buttonList.add(showHudButton = new GuiButton(2, 125, 30, 90, 20, StatCollector.translateToLocal("minetunes.gui.showHud_true")));
-		buttonList.add(moveHudButton = new GuiButton(3, 225, 30, 50, 20, StatCollector.translateToLocal("minetunes.gui.move")));
-		buttonList.add(playModeButton = new GuiButton(4, 125, 55, 150, 20, StatCollector.translateToLocal("minetunes.gui.playMode0")));
+		buttonList.add(showHudButton = new GuiButton(2, 125, 30, 90, 20, I18n.format("minetunes.gui.showHud_true")));
+		buttonList.add(moveHudButton = new GuiButton(3, 225, 30, 50, 20, I18n.format("minetunes.gui.move")));
+		buttonList.add(playModeButton = new GuiButton(4, 125, 55, 150, 20, I18n.format("minetunes.gui.playMode0")));
 		
-		buttonList.add(selectPlaylistButton = new GuiButton(5, width - 150, 55, 125, 20, StatCollector.translateToLocal("minetunes.gui.selectPlaylist")));
+		buttonList.add(selectPlaylistButton = new GuiButton(5, width - 150, 55, 125, 20, I18n.format("minetunes.gui.selectPlaylist")));
 		
-		buttonList.add(deletePlaylistButton = new GuiButton(6, 10, height - 25, 88, 20, StatCollector.translateToLocal("minetunes.gui.delete")));
-		buttonList.add(reloadPlaylistButton = new GuiButton(7, 101, height - 25, 88, 20, StatCollector.translateToLocal("minetunes.gui.reload")));
+		buttonList.add(deletePlaylistButton = new GuiButton(6, 10, height - 25, 88, 20, I18n.format("minetunes.gui.delete")));
+		buttonList.add(reloadPlaylistButton = new GuiButton(7, 101, height - 25, 88, 20, I18n.format("minetunes.gui.reload")));
 		
 		playlistNameField = new GuiTextField(0, fontRendererObj, width - 150, 30, 125, 20);
 		playlistNameField.setFocused(true);
@@ -76,7 +75,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		drawRect(197, getTopSize(), 200, height, 0xFF000000);
 
 		if(PlaylistList.playlistNames.isEmpty()) {
-			String s = StatCollector.translateToLocal("minetunes.gui.noPlaylists");
+			String s = I18n.format("minetunes.gui.noPlaylists");
 			int sWidth = mc.fontRendererObj.getStringWidth(s);
 			int xp = 100 - sWidth / 2;
 			int yp = height / 2 - 5;
@@ -88,24 +87,24 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		GL11.glScalef(3F, 3F, 3F);
 		boolean unicode = mc.fontRendererObj.getUnicodeFlag();
 		mc.fontRendererObj.setUnicodeFlag(true);
-		mc.fontRendererObj.drawString(StatCollector.translateToLocal("minetunes.gui.title"), 2, 1, 0xFFFFFF);
+		mc.fontRendererObj.drawString(I18n.format("minetunes.gui.title"), 2, 1, 0xFFFFFF);
 		mc.fontRendererObj.setUnicodeFlag(unicode);
 		GL11.glPopMatrix();
 
 		boolean hasName = !playlistNameField.getText().isEmpty();
 		boolean creatingPlaylist = MineTunes.playlistCreatorThread != null;
 		if(creatingPlaylist) {
-			String creating = EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("minetunes.gui.creatingPlaylist");
+			String creating = TextFormatting.DARK_AQUA + I18n.format("minetunes.gui.creatingPlaylist");
 			String status = MineTunes.playlistCreatorThread.getProgressState();
 			
 			fontRendererObj.drawStringWithShadow(creating, width - 10 - fontRendererObj.getStringWidth(creating), 30, 0xFFFFFF);
 			fontRendererObj.drawStringWithShadow(status, width - 10 - fontRendererObj.getStringWidth(status), 42, 0xFFFFFF);
 		} else {
-			mc.fontRendererObj.drawString(StatCollector.translateToLocal("minetunes.gui.options"), 126, 20, 0xFFFFFF);
-			mc.fontRendererObj.drawString(StatCollector.translateToLocal("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);
+			mc.fontRendererObj.drawString(I18n.format("minetunes.gui.options"), 126, 20, 0xFFFFFF);
+			mc.fontRendererObj.drawString(I18n.format("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);
 			
 			if(!hasName) {
-				String name = StatCollector.translateToLocal("minetunes.gui.playlistName");
+				String name = I18n.format("minetunes.gui.playlistName");
 				drawCenteredString(fontRendererObj, name, playlistNameField.xPosition + playlistNameField.width / 2, playlistNameField.yPosition + 6, 0x444444);
 			}
 			playlistNameField.drawTextBox();
@@ -114,16 +113,16 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		devOptionsButton.visible = isCtrlKeyDown() && isShiftKeyDown();
 		selectPlaylistButton.visible = !creatingPlaylist;
 		selectPlaylistButton.enabled = hasName;
-		showHudButton.displayString = StatCollector.translateToLocal("minetunes.gui.showHud_" + MTConfig.hudEnabled);
+		showHudButton.displayString = I18n.format("minetunes.gui.showHud_" + MTConfig.hudEnabled);
 		moveHudButton.enabled = MTConfig.hudEnabled;
-		playModeButton.displayString = StatCollector.translateToLocal("minetunes.gui.playMode" + MTConfig.playMode);
+		playModeButton.displayString = I18n.format("minetunes.gui.playMode" + MTConfig.playMode);
 		
 		boolean hasPlaylist = getSelectedPlaylist() != null;
 		deletePlaylistButton.visible = reloadPlaylistButton.visible = hasPlaylist;
 		deletePlaylistButton.enabled = reloadPlaylistButton.enabled = isShiftKeyDown();
 		if(hasPlaylist) {
 			drawBox(8, height - 40, 184, 42);
-			String s = StatCollector.translateToLocal("minetunes.gui.shiftToActivate");
+			String s = I18n.format("minetunes.gui.shiftToActivate");
 			int sWidth = mc.fontRendererObj.getStringWidth(s);
 			drawCenteredString(fontRendererObj, s, 100, height - 36, isShiftKeyDown() ? 0xFFFFFF : 0x666666);
 		}

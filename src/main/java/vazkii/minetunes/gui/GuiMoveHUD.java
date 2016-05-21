@@ -1,10 +1,9 @@
 package vazkii.minetunes.gui;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.util.StatCollector;
-import vazkii.minetunes.config.MTConfig;
-
 import java.io.IOException;
+
+import net.minecraft.client.resources.I18n;
+import vazkii.minetunes.config.MTConfig;
 
 // Stolen from ReCubed
 // FOR SHAME!
@@ -26,8 +25,8 @@ public class GuiMoveHUD extends GuiMineTunes {
 		int my = par2;
 		int quadrant = getQuadrant(width, height, mx, my);
 
-		String clickToSet = StatCollector.translateToLocal("minetunes.gui.clickToSet");
-		String escapeToReset = StatCollector.translateToLocal("minetunes.gui.escapeToReset");
+		String clickToSet = I18n.format("minetunes.gui.clickToSet");
+		String escapeToReset = I18n.format("minetunes.gui.escapeToReset");
 		
 		int sWidth = Math.max(fontRendererObj.getStringWidth(clickToSet), fontRendererObj.getStringWidth(escapeToReset));
 		

@@ -3,19 +3,18 @@ package vazkii.minetunes.player;
 import java.awt.Color;
 import java.awt.Point;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.resources.I18n;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import vazkii.minetunes.MineTunes;
 import vazkii.minetunes.config.MTConfig;
 import vazkii.minetunes.gui.GuiMoveHUD;
 import vazkii.minetunes.playlist.MP3Metadata;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public final class HUDHandler {
 
@@ -25,10 +24,10 @@ public final class HUDHandler {
 	
 	@SubscribeEvent
 	public void onDrawScreen(RenderGameOverlayEvent.Post event) {
-		if(event.type == ElementType.ALL && MTConfig.hudEnabled) {
+		if(event.getType() == ElementType.ALL && MTConfig.hudEnabled) {
 			Minecraft mc = Minecraft.getMinecraft();
-			int width = event.resolution.getScaledWidth();
-			int height = event.resolution.getScaledHeight();
+			int width = event.getResolution().getScaledWidth();
+			int height = event.getResolution().getScaledHeight();
 			Point coords = getCoords(width, height, MTConfig.hudRelativeTo, MTConfig.hudPosX, MTConfig.hudPosY);
 
 			if(MineTunes.musicPlayerThread != null && MineTunes.musicPlayerThread.player != null && MineTunes.musicPlayerThread.playingMP3 != null) {
@@ -43,7 +42,7 @@ public final class HUDHandler {
 				String time = MP3Metadata.getLengthStr((int) ((double) meta.lengthMs - (double) meta.lengthMs * MineTunes.musicPlayerThread.getFractionPlayed()));
 				String title = meta.title + " (" + time + ")";
 				String artist = meta.artist;
-				String volume = showVolume ? (String.format(StatCollector.translateToLocal("minetunes.gui.volume"), "+" + (int) (MineTunes.musicPlayerThread.getRelativeVolume() * 100) + "%")) : "";
+				String volume = showVolume ? I18n.format("minetunes.gui.volume", "+" + (int) (MineTunes.musicPlayerThread.getRelativeVolume() * 100) + "%") : "";
 
 				int padding = 4;
 

@@ -4,7 +4,7 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.client.resources.I18n;
 
 public class Filter extends FileFilter implements java.io.FileFilter {
 
@@ -12,7 +12,7 @@ public class Filter extends FileFilter implements java.io.FileFilter {
 	String accept;
 	
 	public Filter(String name, String accept) {
-		desc = StatCollector.translateToLocal(name);
+		desc = I18n.format(name);
 		this.accept = accept;
 	}
 	
