@@ -1,0 +1,23 @@
+# Keybinds
+minetunes.key.category=Touches MineTunes
+minetunes.keys.menu=Menu Principal
+
+# Gui Text
+minetunes.gui.title=mineTunes
+minetunes.gui.playlists=Gérer les Listes de lecture
+minetunes.gui.options=Options
+minetunes.gui.exit=Sortir
+minetunes.gui.devTools=Outils de Débuggage
+
+# Player Text
+minetunes.player.chooser.filterPlaylist=Dossier ou Liste de lecture (.m3u)
+minetunes.player.chooser.filterMusic=Musique (.mp3)
+
+# Dev Gui Text
+minetunes.guidev.clear=Nettoyer la sortie de débuggage
+minetunes.guidev.resetThread=Réinitialiser le fil
+minetunes.guidev.chooser=Débuggger le sélecteur de fichier
+minetunes.guidev.playMp3=Jouer .mp3
+minetunes.guidev.playLast=Jouer dernier .mp3
+minetunes.guidev.playPause=Jouer/Pause
+minetunes.guidev.volumeControl=Contrôle du volume [+ / -(shift)]
