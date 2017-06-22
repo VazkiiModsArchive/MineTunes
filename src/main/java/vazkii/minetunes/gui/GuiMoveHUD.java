@@ -28,12 +28,12 @@ public class GuiMoveHUD extends GuiMineTunes {
 		String clickToSet = I18n.format("minetunes.gui.clickToSet");
 		String escapeToReset = I18n.format("minetunes.gui.escapeToReset");
 		
-		int sWidth = Math.max(fontRendererObj.getStringWidth(clickToSet), fontRendererObj.getStringWidth(escapeToReset));
+		int sWidth = Math.max(fontRenderer.getStringWidth(clickToSet), fontRenderer.getStringWidth(escapeToReset));
 		
 		drawBox(width / 2 - sWidth / 2 - 4, 16, sWidth + 8, 29);
 		
-		drawCenteredString(fontRendererObj, clickToSet, width / 2, 20, 0xFFFFFF);
-		drawCenteredString(fontRendererObj, escapeToReset, width / 2, 31, 0xFFFFFF);
+		drawCenteredString(fontRenderer, clickToSet, width / 2, 20, 0xFFFFFF);
+		drawCenteredString(fontRenderer, escapeToReset, width / 2, 31, 0xFFFFFF);
 
 		switch(quadrant) {
 		case 0 : {
@@ -52,10 +52,10 @@ public class GuiMoveHUD extends GuiMineTunes {
 		}
 		}
 
-		fontRendererObj.drawStringWithShadow("W", 0, 0, 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("A", 0, height - 9, 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("S", width - 6, height - 9, 0xFFFFFF);
-		fontRendererObj.drawStringWithShadow("D", width - 6, 0, 0xFFFFFF);
+		fontRenderer.drawStringWithShadow("W", 0, 0, 0xFFFFFF);
+		fontRenderer.drawStringWithShadow("A", 0, height - 9, 0xFFFFFF);
+		fontRenderer.drawStringWithShadow("S", width - 6, height - 9, 0xFFFFFF);
+		fontRenderer.drawStringWithShadow("D", width - 6, 0, 0xFFFFFF);
 
 		MTConfig.hudPosX = mx;
 		MTConfig.hudPosY = my;

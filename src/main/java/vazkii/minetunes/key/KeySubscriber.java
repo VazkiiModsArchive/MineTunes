@@ -22,7 +22,7 @@ public class KeySubscriber {
 			delta = event.renderTickTime;
 		lastPartTicks = event.renderTickTime;
 		
-		if(Minecraft.getMinecraft().thePlayer != null) {
+		if(Minecraft.getMinecraft().player != null) {
 			if(event.phase == Phase.START) {
 				for(KeyBinding key : KeyBindings.handlers.keySet()) {
 					KeyHandler handler = KeyBindings.handlers.get(key);

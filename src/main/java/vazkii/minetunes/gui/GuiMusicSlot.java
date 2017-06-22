@@ -49,7 +49,7 @@ public class GuiMusicSlot extends GuiScrollingListMT {
 	protected void drawSlot(int i, int j, int k, int l, Tessellator tessellator) {
 		MP3Metadata metadata = parent.visibleSongs.get(i);
 		if(metadata != null) {
-			FontRenderer font = Minecraft.getMinecraft().fontRendererObj;
+			FontRenderer font = Minecraft.getMinecraft().fontRenderer;
 			boolean selected = isSelected(i);
 
 			int s = j + 20 - listWidth;
