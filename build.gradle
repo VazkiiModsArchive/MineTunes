@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 
@@ -36,15 +36,14 @@ group = "vazkii.minetunes" // http://maven.apache.org/guides/mini/guide-naming-c
 archivesBaseName = config.mod_name
 
 minecraft {
-    version = "${config.mc_version}-${config.forge_version}-${config.mc_version_suffix}"
+    version = "${config.mc_version}-${config.forge_version}"
     runDir = "eclipse/assets"
     mappings = config.mc_mappings
 
     //This, does the token replacement.
-    //Though, I reccomend this to be replaced with a token such as @VERSION@
+    //Though, I recommend this to be replaced with a token such as @VERSION@
     replace 'GRADLE:BUILD', config.build_number
     replace 'GRADLE:VERSION', config.version
-
     replaceIn 'LibMisc.java' //I may have missed another file, though I can only find it in here.
 }
 
@@ -65,7 +64,7 @@ processResources {
         expand 'version': project.version, 'mcversion': project.minecraft.version
     }
 
-    // copy everything else, thats not the mcmod.info
+    // copy everything except the mcmod.info and Photoshop files
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info', '**/psd/**'
     }
@@ -189,7 +188,7 @@ def parseConfig(File config) {
 }
 
 jar {
-    //rename the default output, for some better... sanity with scipts
+    //rename the default output, for some better... sanity with scripts
     archiveName = "${baseName} ${version}.${extension}"
 }
 

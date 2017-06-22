@@ -65,10 +65,10 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		buttonList.add(deletePlaylistButton = new GuiButton(6, 10, height - 25, 88, 20, I18n.format("minetunes.gui.delete")));
 		buttonList.add(reloadPlaylistButton = new GuiButton(7, 101, height - 25, 88, 20, I18n.format("minetunes.gui.reload")));
 
-		playlistNameField = new GuiTextField(0, fontRendererObj, width - 150, 30, 125, 20);
+		playlistNameField = new GuiTextField(0, fontRenderer, width - 150, 30, 125, 20);
 		playlistNameField.setMaxStringLength(32);
 		
-		searchField = new GuiTextField(0, fontRendererObj, 125, 55, 170, 20);
+		searchField = new GuiTextField(0, fontRenderer, 125, 55, 170, 20);
 		searchField.setFocused(true);
 		
 		playlistSlot = new GuiPlaylistSlot(this);
@@ -87,19 +87,19 @@ public class GuiPlaylistManager extends GuiMineTunes {
 
 		if(PlaylistList.playlistNames.isEmpty()) {
 			String s = I18n.format("minetunes.gui.noPlaylists");
-			int sWidth = mc.fontRendererObj.getStringWidth(s);
+			int sWidth = mc.fontRenderer.getStringWidth(s);
 			int xp = 100 - sWidth / 2;
 			int yp = height / 2 - 5;
 			drawBox(xp - 10, yp - 10, sWidth + 20, 30);
-			mc.fontRendererObj.drawStringWithShadow(s, xp, yp, 0xFF4444);
+			mc.fontRenderer.drawStringWithShadow(s, xp, yp, 0xFF4444);
 		}
 
 		GL11.glPushMatrix();
 		GL11.glScalef(3F, 3F, 3F);
-		boolean unicode = mc.fontRendererObj.getUnicodeFlag();
-		mc.fontRendererObj.setUnicodeFlag(true);
-		mc.fontRendererObj.drawString(I18n.format("minetunes.gui.title"), 2, 1, 0xFFFFFF);
-		mc.fontRendererObj.setUnicodeFlag(unicode);
+		boolean unicode = mc.fontRenderer.getUnicodeFlag();
+		mc.fontRenderer.setUnicodeFlag(true);
+		mc.fontRenderer.drawString(I18n.format("minetunes.gui.title"), 2, 1, 0xFFFFFF);
+		mc.fontRenderer.setUnicodeFlag(unicode);
 		GL11.glPopMatrix();
 
 		boolean hasName = !playlistNameField.getText().isEmpty();
@@ -108,14 +108,14 @@ public class GuiPlaylistManager extends GuiMineTunes {
 			String creating = TextFormatting.DARK_AQUA + I18n.format("minetunes.gui.creatingPlaylist");
 			String status = MineTunes.playlistCreatorThread.getProgressState();
 
-			fontRendererObj.drawStringWithShadow(creating, width - 10 - fontRendererObj.getStringWidth(creating), 30, 0xFFFFFF);
-			fontRendererObj.drawStringWithShadow(status, width - 10 - fontRendererObj.getStringWidth(status), 42, 0xFFFFFF);
+			fontRenderer.drawStringWithShadow(creating, width - 10 - fontRenderer.getStringWidth(creating), 30, 0xFFFFFF);
+			fontRenderer.drawStringWithShadow(status, width - 10 - fontRenderer.getStringWidth(status), 42, 0xFFFFFF);
 		} else {
-			mc.fontRendererObj.drawString(I18n.format("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);
+			mc.fontRenderer.drawString(I18n.format("minetunes.gui.playlistCreator"), width - 149, 20, 0xFFFFFF);
 
 			if(!hasName) {
 				String name = I18n.format("minetunes.gui.playlistName");
-				drawCenteredString(fontRendererObj, name, playlistNameField.xPosition + playlistNameField.width / 2, playlistNameField.yPosition + 6, 0x444444);
+				drawCenteredString(fontRenderer, name, playlistNameField.x + playlistNameField.width / 2, playlistNameField.y + 6, 0x444444);
 			}
 			playlistNameField.drawTextBox();
 		}
@@ -130,7 +130,7 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		searchField.drawTextBox();
 		if(searchField.getText().isEmpty()) {
 			String s = I18n.format("minetunes.gui.search");
-			mc.fontRendererObj.drawString(s, searchField.xPosition + searchField.width - mc.fontRendererObj.getStringWidth(s) - 5, searchField.yPosition + 6, 0xAAAAAA);
+			mc.fontRenderer.drawString(s, searchField.x + searchField.width - mc.fontRenderer.getStringWidth(s) - 5, searchField.y + 6, 0xAAAAAA);
 		}
 		
 		boolean hasPlaylist = getSelectedPlaylist() != null;
@@ -139,8 +139,8 @@ public class GuiPlaylistManager extends GuiMineTunes {
 		if(hasPlaylist) {
 			drawBox(8, height - 40, 184, 42);
 			String s = I18n.format("minetunes.gui.shiftToActivate");
-			int sWidth = mc.fontRendererObj.getStringWidth(s);
-			drawCenteredString(fontRendererObj, s, 100, height - 36, isShiftKeyDown() ? 0xFFFFFF : 0x666666);
+			int sWidth = mc.fontRenderer.getStringWidth(s);
+			drawCenteredString(fontRenderer, s, 100, height - 36, isShiftKeyDown() ? 0xFFFFFF : 0x666666);
 		}
 
 		super.drawScreen(mx, my, partialTicks);

@@ -38,7 +38,7 @@ public final class HUDHandler {
 				boolean topSide = MTConfig.hudRelativeTo == 0 || MTConfig.hudRelativeTo == 1;
 				
 				String note = MineTunes.musicPlayerThread.paused ? "\u258E\u258E" : "\u266C";
-				int noteWidth = mc.fontRendererObj.getStringWidth(note) * 2;
+				int noteWidth = mc.fontRenderer.getStringWidth(note) * 2;
 				int noteSpace = 4;
 
 				String time = MP3Metadata.getLengthStr((int) ((double) meta.lengthMs - (double) meta.lengthMs * MineTunes.musicPlayerThread.getFractionPlayed()));
@@ -48,9 +48,9 @@ public final class HUDHandler {
 
 				int padding = 4;
 
-				int titleWidth = mc.fontRendererObj.getStringWidth(title);
-				int artistWidth = mc.fontRendererObj.getStringWidth(artist);
-				int volumeWidth = mc.fontRendererObj.getStringWidth(volume);
+				int titleWidth = mc.fontRenderer.getStringWidth(title);
+				int artistWidth = mc.fontRenderer.getStringWidth(artist);
+				int volumeWidth = mc.fontRenderer.getStringWidth(volume);
 				
 				int textWidth = Math.max(titleWidth, Math.max(artistWidth, volumeWidth));
 				int hudWidth = textWidth + noteWidth + noteSpace + padding * 2;
@@ -85,9 +85,9 @@ public final class HUDHandler {
 				GL11.glScalef(2F, 2F, 2F);
 				GL11.glTranslatef((float) noteX / 2, (float) noteY / 2, 0F);
 				GL11.glTranslatef(0.5F, 0.5F, 0F);
-				mc.fontRendererObj.drawString(note, 0, 0, color.darker().darker().getRGB());
+				mc.fontRenderer.drawString(note, 0, 0, color.darker().darker().getRGB());
 				GL11.glTranslatef(-0.5F, -0.5F, 0F);
-				mc.fontRendererObj.drawString(note, 0, 0, noteColor);
+				mc.fontRenderer.drawString(note, 0, 0, noteColor);
 				GL11.glPopMatrix();
 
 				int diffTitle = 0;
@@ -111,10 +111,10 @@ public final class HUDHandler {
 
 				renderSpectrumAnalyzer(mc, spectrumLeft, y + padding + 20, spectrumWidth, 150, noteColor, topSide);
 				
-				mc.fontRendererObj.drawStringWithShadow(title, textLeft + diffTitle, y + padding, 0xFFFFFF);
-				mc.fontRendererObj.drawStringWithShadow(artist, textLeft + diffArtist, y + 10 + padding, 0xDDDDDD);
+				mc.fontRenderer.drawStringWithShadow(title, textLeft + diffTitle, y + padding, 0xFFFFFF);
+				mc.fontRenderer.drawStringWithShadow(artist, textLeft + diffArtist, y + 10 + padding, 0xDDDDDD);
 				if(showVolume)
-					mc.fontRendererObj.drawStringWithShadow(volume, textLeft + diffVolume, y + 20 + padding, 0xDDDDDD);
+					mc.fontRenderer.drawStringWithShadow(volume, textLeft + diffVolume, y + 20 + padding, 0xDDDDDD);
 				
 			}
 		}

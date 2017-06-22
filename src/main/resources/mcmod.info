@@ -1,7 +1,7 @@
 [
 {
-  "modid": "mineTunes",
-  "name": "mineTunes",
+  "modid": "minetunes",
+  "name": "MineTunes",
   "description": "MineTunes is a Minecraft music player. Check the Keybinds for it in the Keybinds menu.",
   "version": "${version}",
   "mcversion": "${mcversion}",
